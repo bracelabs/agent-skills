@@ -94,7 +94,8 @@ README.md            # from starter/README.md.tmpl
 tmp/                 # ignored; created only when temporary work is needed
 docs/
 ├── README.md
-├── 00_templates/    # reusable document templates
+├── AGENTS.md         # how to use docs/ — directory roles, workflow, checklist
+├── 00_templates/    # reusable document templates (requirements, spec, decision-record, discussion)
 ├── 01_product/      # purpose, users, value
 ├── 02_requirements/ # functional/non-functional requirements, acceptance criteria
 ├── 03_spec/         # architecture, data, APIs, operations

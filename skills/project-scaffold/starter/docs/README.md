@@ -12,3 +12,9 @@ committed go in `tmp/<work-item>/` at the repository root instead.
 | `04_decisions/` | Decision records: context, decision, rationale, rejected options |
 | `05_discussions/` | Unresolved questions and research |
 | `06_execution/` | Delivery plans, QA, releases, operations |
+
+See [`AGENTS.md`](AGENTS.md) for how to use these directories.
+
+## Key documents
+
+<link the specs a newcomer should read first>

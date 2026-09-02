@@ -18,3 +18,11 @@
 ## Rejected options
 
 <what else was considered and why not>
+
+## Impact
+
+<what this affects: components, data, workflows, other decisions>
+
+## Revisit when
+
+<conditions under which this decision should be reconsidered>

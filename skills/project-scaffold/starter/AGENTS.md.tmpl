@@ -16,6 +16,31 @@ Operating rules for agents working in this repository.
   requirements there — not in `tmp/`, and not only in chat or commit messages.
 - Follow the numbered lifecycle under `docs/` (`01_product` … `06_execution`).
 
+## Authority
+
+- `docs/` outranks this file. If they conflict, follow `docs/` and fix the
+  mismatch.
+- Check `docs/` for an existing spec before writing a new one.
+- Read `docs/AGENTS.md` before changing anything under `docs/`.
+
+## When unsure
+
+- If a spec is ambiguous, ask. Do not guess, and do not lock an undecided
+  question by assumption.
+- When asked to consult or advise, give the conclusion and the options first —
+  do not start a broad implementation.
+
+## Working practice
+
+- Leave the user's uncommitted changes alone; do not investigate or revert work
+  outside your task.
+- Run the project's type checks, tests, and build after a change. If you cannot,
+  say why.
+- Update `docs/` in the same change as the code it describes.
+- Match the terminology already used in `docs/`; do not invent new names for
+  existing concepts.
+- After a change, briefly report which files you touched and what you verified.
+
 ## Scope
 
 - <project-specific rules go here>
