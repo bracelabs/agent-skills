@@ -21,19 +21,28 @@ pattern, a `.gitignore` pattern, a `docs/` structure, and any `docs/00_templates
 documents the org standardizes on. Keep it technology-neutral; stack-specific
 starters belong in clearly labelled subdirectories only when repeatedly needed.
 
+## Rename map (applies to every scaffold source)
+
+Whether the scaffold comes from the Built-in Starter, a Bootstrap, or an existing
+Org Scaffold, `project-scaffold` does not copy it verbatim:
+
+| In the scaffold source | Written into the project |
+| --- | --- |
+| `AGENTS.md.tmpl` | `AGENTS.md` |
+| `README.md.tmpl` | `README.md` |
+| `gitignore` (no dot) | `.gitignore` |
+| everything else | same relative path |
+
+**Not copied** — these are scaffold-repo metadata, never payload: `.git/`, the
+scaffold's own `README.md`, and the scaffold's own `.gitignore` (dotted). A
+git-managed Org Scaffold keeps a dotted `.gitignore` for its own hygiene; the
+project's `.gitignore` is built from the dotless `gitignore` payload.
+
 ## Creating it — three patterns
 
 ### 1. Built-in Starter
 
-Copy `starter/` from the skill into `scaffold/`, applying the rename map:
-
-| Bundled | Written as |
-| --- | --- |
-| `starter/gitignore` | `.gitignore` |
-| `starter/AGENTS.md.tmpl` | `AGENTS.md` |
-| `starter/README.md.tmpl` | `README.md` |
-| everything else | same path |
-
+Copy `starter/` from the skill into `scaffold/`, applying the rename map above.
 Adjust only what the user asks for. Do not carry over any product's domain rules,
 names, or services.
 

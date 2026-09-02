@@ -1,8 +1,5 @@
 # <spec title>
 
-- Status: draft | approved | implemented | deprecated
-- Updated: <YYYY-MM-DD>
-
 ## Overview
 
 <what this spec covers and its purpose>

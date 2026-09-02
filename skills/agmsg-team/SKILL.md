@@ -75,11 +75,27 @@ implementation and completion decision.
 
 ### On-demand lifecycle and context reuse
 
-Treat every non-owner role as an on-demand worker. The Task Owner starts it only for a bounded ticket, waits for its report or completion signal, and incorporates the result. Between tickets in the same task, leave the role **paused** (stopped process, session preserved) rather than idling — and `despawn.sh` it once no follow-up is expected (see below). Do not retain idle QA, security, consultant, or engineer processes just in case.
+Treat every non-owner role as an on-demand worker: `spawn` it for one bounded
+ticket, wait for its report, incorporate the result, then `despawn` it. Do not
+keep idle QA, security, consultant, or engineer processes around between work
+items.
 
-Reuse the same stable role name during the same task (for example, `<team>-qa`) and spawn it **without** `--fresh` by default. agmsg can resume the saved role session when available, avoiding a full background re-explanation while the process itself remains stopped between assignments. Reserve `--fresh` for intentionally independent work where prior context would be misleading. A resumed role gets only the delta: task status, relevant files/commit, and one next question—not a duplicated full history.
+`spawn.sh <type> <name> --project "$(pwd)" [--team <team>] [--model <cli-model-id>] [--boot-prompt "<ticket>"] [--no-wait] [--fresh]`
+pre-joins `<name>`, opens a tmux pane (inside tmux) or a new terminal, and starts
+the CLI. A `claude-code` spawn blocks until its watcher attaches; a `codex` spawn
+returns immediately, so a codex peer must get its assignment via `--boot-prompt`,
+not a message sent after it is idle.
 
-After a spawned peer has delivered its report and no immediate follow-up is assigned, reclaim it with `despawn.sh`. Use graceful teardown for a spawned `claude-code` peer. A spawned Codex peer has no watcher for graceful teardown, so use `--force` only for that peer and only after confirming its report was received; `--force` kills the placement created by `spawn.sh`. Never despawn a hand-started peer or any role not spawned by this Task Owner.
+To bring a role back later in the same task, `spawn` the **same name again**
+without `--fresh` — agmsg resumes its recorded session, so send only the delta
+(status, relevant files/commit, one next question). Use `--fresh` only when prior
+context would mislead.
+
+`despawn.sh <team> <owner> <name> [--force]` is the inverse of `spawn` and only
+tears down a role this owner spawned. A graceful `despawn` of a `codex` peer
+often reports "no live lock" (codex has no watcher) — that is normal; add
+`--force` only if a terminal window is left open. Never despawn a hand-started
+peer.
 
 ### agmsg interfaces
 
@@ -91,7 +107,7 @@ then call:
 bash <agmsg-skill-dir>/scripts/send.sh <team> <from> <to> "<structured ticket>"
 bash <agmsg-skill-dir>/scripts/inbox.sh <team> <agent>
 bash <agmsg-skill-dir>/scripts/team.sh <team>
-bash <agmsg-skill-dir>/scripts/spawn.sh <codex|claude-code> <agent> --team <team> --model <installed-cli-model-id> --boot-prompt "<bounded ticket>"
+bash <agmsg-skill-dir>/scripts/spawn.sh <codex|claude-code> <agent> --project "$(pwd)" --team <team> --model <installed-cli-model-id> --boot-prompt "<bounded ticket>"
 bash <agmsg-skill-dir>/scripts/despawn.sh <team> <owner> <spawned-agent> [--force]
 ```
 

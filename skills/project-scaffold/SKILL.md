@@ -50,11 +50,25 @@ in [org-scaffold.md](references/org-scaffold.md).
    [bootstrap.md](references/bootstrap.md).
 3. **Use existing Scaffold** — an Org Scaffold already exists at
    `$PROJECT_SCAFFOLD_HOME/scaffold/`, or the user points at one (local path or
-   git remote). Apply it as-is.
+   git remote). Apply it, applying the rename map in
+   [org-scaffold.md](references/org-scaffold.md) (a scaffold source is not copied
+   verbatim — `*.tmpl` and `gitignore` are renamed, and the scaffold's own
+   `README.md` / `.gitignore` are not copied).
 
 For patterns 1 and 2, after the `scaffold/` content is approved, offer to place it
 under git and, if the user wants, create a remote repository. "Not git-managed" is
 a valid choice. Never create a remote or push without explicit approval.
+
+## Preflight (read-only, before applying)
+
+Validate the scaffold source and report any failure instead of applying:
+
+- every `*.tmpl` and `gitignore` resolves to a rename-map target; no target
+  collides with the scaffold's own `README.md` / `.gitignore`
+- the payload's `.gitignore` keeps an anchored `/tmp/` rule
+- internal Markdown links inside the scaffold resolve
+- if `.project-scaffold.json` will be read (re-apply / audit), its `scaffoldSource`
+  is reachable
 
 ## Apply a scaffold to a project
 

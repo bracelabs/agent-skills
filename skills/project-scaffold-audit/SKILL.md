@@ -15,17 +15,22 @@ Bootstrap. See [analysis.md](references/analysis.md).
 
 ## Resolve the comparison baseline
 
-1. Read the project's `.project-scaffold.json` if present, and use its
-   `scaffoldRef`:
-   - Org Scaffold git-managed → compare against that commit (check it out, or read
-     paths from it with `git show`).
-   - Not git-managed, or `scaffoldRef` is a timestamp → compare against the
-     current `scaffold/` and note the baseline is "current", not the exact applied
+1. Locate the Org Scaffold. Prefer the project's `.project-scaffold.json`
+   `scaffoldSource`; otherwise `$PROJECT_SCAFFOLD_HOME/scaffold/`, else
+   `~/.config/agent-skills/project-scaffold/scaffold/`.
+   - `scaffoldSource` is a local path → use it directly.
+   - `scaffoldSource` is a git remote → if the local scaffold directory is a clone
+     of that remote, `git fetch` it; otherwise `git clone` it into a cache
+     (`$PROJECT_SCAFFOLD_HOME/.cache/<sanitized-remote>/`) and read from there.
+2. Pick the ref to diff against:
+   - `.project-scaffold.json` present with a git-SHA `scaffoldRef`, and the scaffold
+     is git-managed → diff against that commit (`git show <ref>:<path>`).
+   - No marker, `scaffoldRef` is a timestamp, the scaffold is not git-managed, or
+     the ref cannot be resolved/fetched → diff against the current scaffold and
+     state in the report that the baseline is "current", not the exact applied
      version.
-2. No marker file → compare against the current Org Scaffold
-   (`$PROJECT_SCAFFOLD_HOME/scaffold/`, else
-   `~/.config/agent-skills/project-scaffold/scaffold/`) and state this in the
-   report. Ask the user to confirm the scaffold identity if it is ambiguous.
+3. If the scaffold identity is still ambiguous (e.g. no marker and more than one
+   plausible scaffold), ask the user before proceeding.
 
 ## Inspection boundary
 

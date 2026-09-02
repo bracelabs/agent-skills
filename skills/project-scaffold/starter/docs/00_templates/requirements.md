@@ -1,8 +1,5 @@
 # <requirement title>
 
-- Status: draft | approved | implemented | deprecated
-- Updated: <YYYY-MM-DD>
-
 ## Goal
 
 <what this should achieve — not how>
