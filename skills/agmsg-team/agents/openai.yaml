@@ -1,0 +1,4 @@
+interface:
+  display_name: "agmsg Team Development"
+  short_description: "Model-selected owner with Luna-first workers"
+  default_prompt: "Use $agmsg-team with the model selected for this session as Task Owner and Luna-first agmsg workers."

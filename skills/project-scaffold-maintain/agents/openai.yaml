@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Scaffold Maintain"
+  short_description: "Promote generic conventions from an audit into the Built-in Starter"
+  default_prompt: "Use $project-scaffold-maintain to integrate this audit's Global Promote candidates into the Built-in Starter."

@@ -1,0 +1,4 @@
+# Untracked working artifacts (see AGENTS.md)
+/tmp/
+
+.DS_Store

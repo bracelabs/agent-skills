@@ -1,0 +1,21 @@
+# AGENTS.md
+
+Operating rules for agents working in this repository.
+
+## Working files
+
+- Use `tmp/<work-item>/` at the repository root for artifacts that must not be
+  committed: scratch notes, one-off exports, rendered previews, logs, and handoff
+  files shared between agents.
+- `tmp/` is git-ignored via an anchored `/tmp/` rule. Do not add placeholders to it.
+- Do not use a system `/tmp/...` path for artifacts other agents in this repo need.
+
+## Durable documentation
+
+- `docs/` is the versioned source of truth. Keep durable decisions, specs, and
+  requirements there — not in `tmp/`, and not only in chat or commit messages.
+- Follow the numbered lifecycle under `docs/` (`01_product` … `06_execution`).
+
+## Scope
+
+- <project-specific rules go here>
