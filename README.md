@@ -20,6 +20,10 @@ gh skill install bracelabs/agent-skills <skill-name>
 
 ## How project-scaffold works
 
+For AI agents, see the [project-scaffold setup guide](docs/project-scaffold-setup.md)
+for the first-time flow: install the skills, create an Org Scaffold, use it in a
+project, and feed approved improvements back through an audit.
+
 ### Three layers
 
 - **Built-in Starter** — the generic template bundled with the skill. A starting

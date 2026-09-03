@@ -19,6 +19,9 @@ gh skill install bracelabs/agent-skills <skill-name>
 
 ## project-scaffold の考え方と使い方
 
+AI エージェント向けの初回セットアップ資料は、英語の
+[project-scaffold setup guide](docs/project-scaffold-setup.md) を参照してください。
+
 ### 3 つのレイヤー
 
 - **Built-in Starter** — スキルに同梱の汎用テンプレート。
