@@ -1,13 +1,13 @@
-# Org Scaffold
+# Org Standard
 
-The **Org Scaffold** is the standard a user or organization actually uses and
+The **Org Standard** is the standard a user or organization actually uses and
 grows over time. It is distinct from the Built-in Starter (a generic starting
 point bundled with the skill) and from any single Project.
 
 ## Location
 
 - `$PROJECT_SCAFFOLD_HOME` if set, else `~/.config/agent-skills/project-scaffold/`.
-- Scaffold content lives in `scaffold/` under that directory.
+- The Org Standard's content lives in `scaffold/` under that directory.
 - Optional companion file in the same directory:
   - `bootstrap-sources.md` — a record of what a Bootstrap run scanned.
 
@@ -23,8 +23,8 @@ starters belong in clearly labelled subdirectories only when repeatedly needed.
 
 ## Rename map (applies to every scaffold source)
 
-Whether the scaffold comes from the Built-in Starter, a Bootstrap, or an existing
-Org Scaffold, `project-scaffold` does not copy it verbatim:
+Whether it comes from the Built-in Starter, a Bootstrap, or an existing
+Org Standard, `project-scaffold` does not copy the source verbatim:
 
 | In the scaffold source | Written into the project |
 | --- | --- |
@@ -35,7 +35,7 @@ Org Scaffold, `project-scaffold` does not copy it verbatim:
 
 **Not copied** — these are scaffold-repo metadata, never payload: `.git/`, the
 scaffold's own `README.md`, and the scaffold's own `.gitignore` (dotted). A
-git-managed Org Scaffold keeps a dotted `.gitignore` for its own hygiene; the
+git-managed Org Standard keeps a dotted `.gitignore` for its own hygiene; the
 project's `.gitignore` is built from the dotless `gitignore` payload.
 
 ## Creating it — three patterns
@@ -49,10 +49,10 @@ names, or services.
 ### 2. Bootstrap from existing assets
 
 Scan the user's chosen sources once (see [bootstrap.md](bootstrap.md)), synthesize
-a scaffold, and present it for approval before writing `scaffold/`. Existing
+an Org Standard, and present it for approval before writing `scaffold/`. Existing
 organizational rules and structure take priority over the Built-in Starter shape.
 
-### 3. Use existing Scaffold
+### 3. Use existing Standard
 
 `scaffold/` already exists, or the user points at a local path or git remote.
 Validate that it is readable and technology-neutral enough to apply; otherwise
@@ -75,12 +75,12 @@ After the `scaffold/` content is approved, offer — do not assume:
 
 ## Project marker
 
-When `project-scaffold` applies a scaffold to a project it writes
+When `project-scaffold` applies an Org Standard to a project it writes
 `.project-scaffold.json` at the project root:
 
 ```json
 {
-  "scaffoldSource": "<path or git remote URL of the Org Scaffold>",
+  "scaffoldSource": "<path or git remote URL of the Org Standard>",
   "scaffoldRef": "<git commit SHA when git-managed, else ISO 8601 timestamp>",
   "appliedAt": "<ISO 8601 timestamp>"
 }

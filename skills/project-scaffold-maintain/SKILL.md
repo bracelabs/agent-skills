@@ -11,8 +11,8 @@ skills repository ships and `project-scaffold` copies from. This is the top of t
 promotion chain:
 
 ```
-Project → project-scaffold-audit → Org Scaffold
-Org Scaffold → Global Promote candidate → project-scaffold-maintain → Built-in Starter
+Project → project-scaffold-audit → Org Standard
+Org Standard → Global Promote candidate → project-scaffold-maintain → Built-in Starter
 ```
 
 Use this only when maintaining a skills repository (this one, or a fork). It edits
@@ -26,7 +26,7 @@ copy, whose edits are lost on the next `gh skill update`.
 - Input: one or more **Global Promote candidates**, normally from a
   `project-scaffold-audit` report. Given a full audit report, take only the items
   it flagged as "Global Promote candidate"; ignore Local / plain Promote /
-  Remove-Migrate items — those belong to an Org Scaffold, not the starter.
+  Remove-Migrate items — those belong to an Org Standard, not the starter.
 
 ## Filter
 
@@ -46,9 +46,9 @@ generic.
    `skills/project-scaffold/starter/`: a new template document, an added `docs/`
    directory with its `README.md`, an `AGENTS.md.tmpl` rule, a `gitignore` line.
 2. If a starter filename changes, update the rename map in
-   `skills/project-scaffold/references/org-scaffold.md`.
-3. Change `skills/project-scaffold/SKILL.md` only if the way scaffolds are created
-   or applied actually changes; prefer starter-only edits.
+   `skills/project-scaffold/references/org-standard.md`.
+3. Change `skills/project-scaffold/SKILL.md` only if the way Org Standards are
+   created or applied actually changes; prefer starter-only edits.
 4. Keep every starter file generic — placeholders like `<project name>`, never
    real content.
 
@@ -63,6 +63,6 @@ generic.
 
 ## Not this skill's job
 
-- Editing an Org Scaffold — that is `project-scaffold-audit`.
-- Applying a scaffold to a project — that is `project-scaffold`.
+- Editing an Org Standard — that is `project-scaffold-audit`.
+- Applying an Org Standard to a project — that is `project-scaffold`.
 - Cutting a release.

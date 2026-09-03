@@ -1,11 +1,11 @@
-# Scaffold scan and diff analysis
+# Org Standard scan and diff analysis
 
-Shared method used by `project-scaffold-audit` (Project → Org Scaffold) and by
-`project-scaffold` Bootstrap (existing assets → Org Scaffold).
+Shared method used by `project-scaffold-audit` (Project → Org Standard) and by
+`project-scaffold` Bootstrap (existing assets → Org Standard).
 
 ## 1. Scan
 
-For each target (project, scaffold, or asset) collect only permitted metadata:
+For each target (project, Org Standard, or asset) collect only permitted metadata:
 
 - shallow directory layout (depth ~2), noting intentional empty dirs and placeholders
 - root `AGENTS.md` / `agents.md` — every operating rule, especially the
@@ -24,7 +24,7 @@ files, secrets, or product specifications.
 ## 2. Diff
 
 Compare the scanned metadata against the baseline — the Built-in Starter for
-Bootstrap, the resolved Org Scaffold version for audit. Record, with exact file
+Bootstrap, the resolved Org Standard version for audit. Record, with exact file
 paths:
 
 - missing / renamed / materially different structural or documentation conventions
@@ -39,11 +39,11 @@ paths:
 | Bucket | Test |
 | --- | --- |
 | **Local** | Explained by the target's stack, domain, or delivery model. |
-| **Promote** | Durable, technology-neutral, seen across multiple targets or user-endorsed; the Org Scaffold should adopt it. |
+| **Promote** | Durable, technology-neutral, seen across multiple targets or user-endorsed; the Org Standard should adopt it. |
 | **Remove / Migrate** | Outdated, duplicated, or contradicts the current standard. |
 | **Needs-decision** | Cannot tell whether it is intentional; name the evidence that would settle it. |
 
-For Bootstrap, "Promote" means "include in the initial scaffold"; a convention
+For Bootstrap, "Promote" means "include in the initial Org Standard"; a convention
 seen in only one source stays out unless the user endorses it.
 
 ## 4. Report

@@ -1,7 +1,7 @@
 # Bootstrap from existing assets
 
-Bootstrap builds an Org Scaffold from what an organization already has, instead of
-from the Built-in Starter. It runs once; afterwards the Org Scaffold is the source
+Bootstrap builds an Org Standard from what an organization already has, instead of
+from the Built-in Starter. It runs once; afterwards the Org Standard is the source
 of truth and the scanned sources are no longer consulted on every run.
 
 ## Sources
@@ -38,11 +38,11 @@ Use the analysis method in
 [../../project-scaffold-audit/references/analysis.md](../../project-scaffold-audit/references/analysis.md):
 scan each source, diff against the Built-in Starter, and classify. For Bootstrap,
 treat conventions seen across multiple sources, or explicitly endorsed by the
-user, as the scaffold baseline; keep single-source domain rules out unless asked.
+user, as the Org Standard baseline; keep single-source domain rules out unless asked.
 
-Present the synthesized scaffold — structure, AGENTS.md rules, `.gitignore`,
+Present the synthesized Org Standard — structure, AGENTS.md rules, `.gitignore`,
 templates — for approval before writing `scaffold/`. Then follow the git
-follow-up in [org-scaffold.md](org-scaffold.md).
+follow-up in [org-standard.md](org-standard.md).
 
 Requires the `project-scaffold-audit` skill installed. If it is absent, tell the
 user and offer pattern 1 (Built-in Starter) instead.

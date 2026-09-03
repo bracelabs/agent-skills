@@ -1,4 +1,4 @@
 interface:
   display_name: "Project Scaffold Audit"
-  short_description: "Audit a project against its Org Scaffold and propose promotions"
-  default_prompt: "Use $project-scaffold-audit to compare this project against its Org Scaffold and propose Local / Promote / Remove-Migrate / Needs-decision changes."
+  short_description: "Audit a project against its Org Standard and propose promotions"
+  default_prompt: "Use $project-scaffold-audit to compare this project against its Org Standard and propose Local / Promote / Remove-Migrate / Needs-decision changes."

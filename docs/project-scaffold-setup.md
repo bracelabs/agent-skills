@@ -1,20 +1,20 @@
 # project-scaffold setup guide
 
 `project-scaffold` does not overwrite a project with a template. First create an
-**Org Scaffold**, the standard shared by a team or organization. Apply it to a
+**Org Standard**, the standard shared by a team or organization. Apply it to a
 project only with approval, then use `project-scaffold-audit` to feed approved
-improvements back into the Org Scaffold.
+improvements back into the Org Standard.
 
 The first-time flow is:
 
 ```text
 Install the skills with gh
     ↓
-Run project-scaffold once to create an Org Scaffold
+Run project-scaffold once to create an Org Standard
     ↓
 Use it on a project: create a new structure, or apply to an existing repository
     ↓
-Run project-scaffold-audit repeatedly across projects to improve the Org Scaffold
+Run project-scaffold-audit repeatedly across projects to improve the Org Standard
     ↓
 Use project-scaffold-maintain to feed suitable generic improvements into this repository
 ```
@@ -38,9 +38,9 @@ boundary.
 
 ## 1. Install the skills
 
-Install `project-scaffold` to create and apply an Org Scaffold, and
+Install `project-scaffold` to create and apply an Org Standard, and
 `project-scaffold-audit` to learn from applied projects and improve that Org
-Scaffold. Both are required when you create an Org Scaffold by bootstrapping from
+Standard. Both are required when you create an Org Standard by bootstrapping from
 existing projects.
 
 ```sh
@@ -51,18 +51,18 @@ gh skill install bracelabs/agent-skills project-scaffold-audit
 Maintainers of this `agent-skills` repository should also install
 `project-scaffold-maintain`. It is the feedback path from an audit's generic
 improvements into this repository's bundled Built-in Starter; it does not update
-an organization's own scaffold.
+an organization's own standard.
 
 ```sh
 gh skill install bracelabs/agent-skills project-scaffold-maintain
 ```
 
-## 2. Create the first Org Scaffold
+## 2. Create the first Org Standard
 
 In Codex or Claude Code, make this request before applying anything to a project:
 
 ```text
-Use $project-scaffold to create an Org Scaffold. Start from the Built-in Starter,
+Use $project-scaffold to create an Org Standard. Start from the Built-in Starter,
 show me the proposed contents before writing them, then create it at
 ~/.config/agent-skills/project-scaffold/scaffold/. I want to decide about Git
 management and a remote repository only after reviewing the contents.
@@ -73,7 +73,7 @@ Bootstrap. Name the sources and retain a narrow inspection boundary; do not ask
 the agent to read application code or secrets.
 
 ```text
-Use $project-scaffold to bootstrap an Org Scaffold from the reference projects
+Use $project-scaffold to bootstrap an Org Standard from the reference projects
 below. Inspect only each root AGENTS.md, README.md, .gitignore, docs/README.md,
 docs/AGENTS.md, docs/00_templates/, and shallow directory structure. Propose
 only technology-neutral conventions shared by the sources. Do not change
@@ -84,32 +84,33 @@ Reference projects:
 - <absolute path>
 ```
 
-The scaffold content lives in `scaffold/` under `PROJECT_SCAFFOLD_HOME` (default
-`~/.config/agent-skills/project-scaffold/`); set `PROJECT_SCAFFOLD_HOME` to use
-another location. After the contents are approved, Git management, creating a
-remote, and pushing are separate choices that require explicit approval.
+The Org Standard's content lives in `scaffold/` under `PROJECT_SCAFFOLD_HOME`
+(default `~/.config/agent-skills/project-scaffold/`); set `PROJECT_SCAFFOLD_HOME`
+to use another location. After the contents are approved, Git management, creating
+a remote, and pushing are separate choices that require explicit approval.
 
-A Bootstrapped Org Scaffold is a starting hypothesis, not a finished standard.
-Apply it to one or more representative repositories, then run audits over time.
-Promote only the conventions supported by repeated evidence; this prevents a
-single project's stack or domain rules from becoming organization-wide defaults.
+A first Org Standard — from the Built-in Starter or a Bootstrap — is thin: a
+starting hypothesis, not a finished standard. Apply it to one or more
+representative repositories, then run audits repeatedly over time. Promote only
+the conventions supported by repeated evidence; this prevents a single project's
+stack or domain rules from becoming organization-wide defaults.
 
-## 3. Use the scaffold in a project
+## 3. Use the Org Standard in a project
 
-Once the Org Scaffold is approved, `project-scaffold` supports two project
+Once the Org Standard is approved, `project-scaffold` supports two project
 modes. In either mode, it proposes a plan first and changes only what you
 approve.
 
 ### Create a new project structure
 
-For an empty or newly requested target, use the Org Scaffold to create the
+For an empty or newly requested target, use the Org Standard to create the
 approved repository structure and operational files. It does not authorize the
 agent to select a product stack, copy application code, or make unrequested
 technology decisions.
 
 ```text
 Use $project-scaffold to create a new project structure at <absolute path> from
-the current Org Scaffold. First show the change plan, including every file and
+the current Org Standard. First show the change plan, including every file and
 directory to create. Do not create or change anything until I approve the plan.
 Do not add application code, dependencies, product rules, or technology choices
 unless I explicitly request them.
@@ -119,10 +120,10 @@ unless I explicitly request them.
 
 For an existing repository, first inspect only the permitted operational metadata
 and preserve its local rules. Apply only the conventions that the approved plan
-lists; an Org Scaffold is not permission to rewrite every difference.
+lists; an Org Standard is not permission to rewrite every difference.
 
 ```text
-Use $project-scaffold to apply the current Org Scaffold to this project. First
+Use $project-scaffold to apply the current Org Standard to this project. First
 inspect only the root AGENTS.md, README.md, .gitignore, docs/README.md,
 docs/AGENTS.md, docs/00_templates/, and shallow directory structure. Show the
 change plan and do not modify files until I approve it. Preserve existing local
@@ -132,19 +133,19 @@ conventions unless I explicitly ask to change them.
 For either mode, the plan should identify every file and directory to create or
 change, the convention and source behind it, compatibility effects, and
 intentional local exceptions. Only after approval should the agent make minimal
-changes and record the scaffold source and reference in `.project-scaffold.json`
-at the project root.
+changes and record the Org Standard's source and reference in
+`.project-scaffold.json` at the project root.
 
-## 4. Feed durable improvements back into the Org Scaffold
+## 4. Feed durable improvements back into the Org Standard
 
-After the scaffold has been applied, run `project-scaffold-audit` whenever a
+After the Org Standard has been applied, run `project-scaffold-audit` whenever a
 project reveals a convention that might help other projects. Repeat this with
-representative repositories as they evolve; an Org Scaffold should grow from
+representative repositories as they evolve; an Org Standard should grow from
 several observed uses, not from one initial Bootstrap alone.
 
 ```text
 Use $project-scaffold-audit to compare this project with its applied Org
-Scaffold. Do not change anything. Inspect only the root AGENTS.md, README.md,
+Standard. Do not change anything. Inspect only the root AGENTS.md, README.md,
 .gitignore, docs/README.md, docs/AGENTS.md, docs/00_templates/, and shallow
 directory structure. Classify every difference as Local, Promote, Remove-Migrate,
 or Needs-decision. For each item, report evidence, affected scope, benefit,
@@ -154,14 +155,15 @@ compatibility risk, and the smallest proposed change.
 | Classification | Meaning |
 | --- | --- |
 | `Local` | Keep it in the project: it is justified by the stack, domain, or delivery model. |
-| `Promote` | A durable, technology-neutral convention that belongs in the Org Scaffold. |
+| `Promote` | A durable, technology-neutral convention that belongs in the Org Standard. |
 | `Remove-Migrate` | An outdated, duplicate, or conflicting convention that should be cleaned up. |
 | `Needs-decision` | There is not enough evidence to establish intent; identify what would settle it. |
 
 An audit is read-only by default. Approve individual `Promote` or
-`Remove-Migrate` items before changing the Org Scaffold. For a Git-managed Org
-Scaffold, make the minimal change on a branch and open a PR. For a non-Git-managed
-scaffold, make the minimal direct edit and re-read it to verify the result.
+`Remove-Migrate` items before changing the Org Standard. For a Git-managed Org
+Standard, make the minimal change on a branch and open a PR. For a
+non-Git-managed one, make the minimal direct edit and re-read it to verify the
+result.
 
 ## 5. Improve the Built-in Starter only when appropriate
 
@@ -181,7 +183,7 @@ then create a branch and PR. Do not merge or release.
 ## Decision guide
 
 - Start from the Built-in Starter for the fastest path; you can evolve the Org
-  Scaffold later.
+  Standard later.
 - Bootstrap when you already have several mature projects that demonstrate the
   conventions you want to share.
 - Treat a convention seen in only one project as `Local` unless the user endorses
