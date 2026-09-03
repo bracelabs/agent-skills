@@ -26,7 +26,7 @@ For every scanned project inspect only:
 - root `README.md`
 - root `.gitignore`
 - a root package or workspace manifest only to detect an intentional monorepo shape
-- `docs/README.md` and shallow documentation-directory names
+- `docs/README.md`, `docs/AGENTS.md`, and shallow documentation-directory names
 - reusable documents under `docs/00_templates/`
 
 Do not read application source, deep file trees, dependencies, lockfiles,

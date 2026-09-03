@@ -15,6 +15,7 @@ For each target (project, scaffold, or asset) collect only permitted metadata:
   shared-artifact rules
 - `docs/README.md` and shallow `docs/` directory names; the numbered lifecycle
   (`01_product` … `06_execution`) if used
+- `docs/AGENTS.md` — how docs/ is used: directory roles, workflow, checklist
 - reusable documents under `docs/00_templates/`
 
 Never read application source, dependency trees, lockfiles, generated output, data

@@ -35,10 +35,11 @@ Bootstrap. See [analysis.md](references/analysis.md).
 ## Inspection boundary
 
 Inspect only: shallow layout, root AGENTS.md, root README.md, root .gitignore,
-listed operational files, docs/README.md, shallow docs directories, and reusable
-files under `docs/00_templates/`. Do not read application source, dependency
-trees, generated output, secrets, or product specifications. Preserve existing
-work; treat repo-specific rules as intentional until evidence says otherwise.
+listed operational files, docs/README.md, docs/AGENTS.md, shallow docs
+directories, and reusable files under `docs/00_templates/`. Do not read
+application source, dependency trees, generated output, secrets, or product
+specifications. Preserve existing work; treat repo-specific rules as intentional
+until evidence says otherwise.
 
 ## Classify every difference
 

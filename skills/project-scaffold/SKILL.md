@@ -77,9 +77,9 @@ Do not modify a project until the user approves a concrete plan.
 1. Determine mode: **new** (empty or newly requested target) or **existing**.
    Preserve current user work either way.
 2. Inspect only permitted metadata of the target: shallow layout, root AGENTS.md,
-   root README.md, root .gitignore, listed operational files, docs/README.md and
-   shallow docs directory names. Do not read application source, dependency trees,
-   generated output, secrets, or product specifications.
+   root README.md, root .gitignore, listed operational files, docs/README.md,
+   docs/AGENTS.md, and shallow docs directory names. Do not read application
+   source, dependency trees, generated output, secrets, or product specifications.
 3. Select only what the user requested or an approved `project-scaffold-audit`
    report identifies. An existing Org Scaffold is not permission to rewrite every
    difference.

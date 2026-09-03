@@ -12,7 +12,7 @@ Install the skills with gh
     ↓
 Run project-scaffold once to create an Org Scaffold
     ↓
-Use it to create a new project structure or selectively apply it to an existing repository
+Use it on a project: create a new structure, or apply to an existing repository
     ↓
 Run project-scaffold-audit repeatedly across projects to improve the Org Scaffold
     ↓
@@ -27,14 +27,14 @@ expectation in the setup request, or treat it as the default for this guide:
 
 ```text
 Do not restate this guide. Start with the recommended next action in at most
-five bullets. Ask for the smallest decision needed. Show a detailed change plan
-only immediately before an approved write.
+five bullets. Ask for the smallest decision needed. Show the change plan only
+immediately before an approved write.
 ```
 
-The detailed plan is still required before a write: it should list the affected
-paths, source conventions, compatibility effects, and intentional exceptions.
-The rule above keeps the initial response concise; it does not remove the
-approval boundary.
+The change plan is still required before a write: it lists the affected paths,
+source conventions, compatibility effects, and intentional exceptions. The rule
+above keeps the initial response concise; it does not remove the approval
+boundary.
 
 ## 1. Install the skills
 
@@ -68,7 +68,7 @@ show me the proposed contents before writing them, then create it at
 management and a remote repository only after reviewing the contents.
 ```
 
-To derive a standard from good existing projects instead, explicitly ask for a
+To derive a standard from reference projects instead, explicitly ask for a
 Bootstrap. Name the sources and retain a narrow inspection boundary; do not ask
 the agent to read application code or secrets.
 
@@ -84,10 +84,10 @@ Reference projects:
 - <absolute path>
 ```
 
-The default location is `~/.config/agent-skills/project-scaffold/scaffold/`.
-Set `PROJECT_SCAFFOLD_HOME` to use another location. After the contents are
-approved, Git management, creating a remote, and pushing are separate choices
-that require explicit approval.
+The scaffold content lives in `scaffold/` under `PROJECT_SCAFFOLD_HOME` (default
+`~/.config/agent-skills/project-scaffold/`); set `PROJECT_SCAFFOLD_HOME` to use
+another location. After the contents are approved, Git management, creating a
+remote, and pushing are separate choices that require explicit approval.
 
 A Bootstrapped Org Scaffold is a starting hypothesis, not a finished standard.
 Apply it to one or more representative repositories, then run audits over time.
@@ -109,10 +109,10 @@ technology decisions.
 
 ```text
 Use $project-scaffold to create a new project structure at <absolute path> from
-the current Org Scaffold. First show the complete change plan, including every
-file and directory to create. Do not create or change anything until I approve
-the plan. Do not add application code, dependencies, product rules, or technology
-choices unless I explicitly request them.
+the current Org Scaffold. First show the change plan, including every file and
+directory to create. Do not create or change anything until I approve the plan.
+Do not add application code, dependencies, product rules, or technology choices
+unless I explicitly request them.
 ```
 
 ### Apply to an existing repository
@@ -124,9 +124,9 @@ lists; an Org Scaffold is not permission to rewrite every difference.
 ```text
 Use $project-scaffold to apply the current Org Scaffold to this project. First
 inspect only the root AGENTS.md, README.md, .gitignore, docs/README.md,
-docs/AGENTS.md, docs/00_templates/, and shallow directory structure. Show a
-concrete change plan and do not modify files until I approve it. Preserve
-existing local conventions unless I explicitly ask to change them.
+docs/AGENTS.md, docs/00_templates/, and shallow directory structure. Show the
+change plan and do not modify files until I approve it. Preserve existing local
+conventions unless I explicitly ask to change them.
 ```
 
 For either mode, the plan should identify every file and directory to create or
@@ -186,4 +186,5 @@ then create a branch and PR. Do not merge or release.
   conventions you want to share.
 - Treat a convention seen in only one project as `Local` unless the user endorses
   it for the organization.
-- Keep every application and update flow as: **plan → approval → minimal change**.
+- Keep every application and update flow as: **change plan → approval → minimal
+  change**.
