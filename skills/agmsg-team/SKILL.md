@@ -104,12 +104,25 @@ Keep the selected Owner throughout the task. Escalate only at a concrete decisio
 or failure point; record the response back to that Owner, who makes the
 implementation and completion decision.
 
+### Transport: subagent for same-CLI, agmsg for cross-CLI
+
+When the worker runs the **same CLI as the Task Owner** (claude→claude,
+codex→codex), delegate through that CLI's own subagent mechanism — Claude Code's
+Task/Agent tool, Codex's equivalent — not an agmsg `spawn`. It is lighter (no
+terminal, no watcher, no permission-prompt hang) and the result returns inline.
+
+Reach for agmsg `spawn` only when the worker must be a **different CLI** than the
+Owner, when the CLI has no native subagent, or when the peer must persist and
+resume across many Owner turns or be messaged directly by other workers — things
+a subagent cannot do. Roles and model tiers apply either way; only the transport
+changes.
+
 ### On-demand lifecycle and context reuse
 
-Treat every non-owner role as an on-demand worker: `spawn` it for one bounded
-ticket, wait for its report, incorporate the result, then `despawn` it. Do not
-keep idle QA, security, consultant, or engineer processes around between work
-items.
+On the agmsg path, treat every non-owner role as an on-demand worker: `spawn` it
+for one bounded ticket, wait for its report, incorporate the result, then
+`despawn` it. Do not keep idle QA, security, consultant, or engineer processes
+around between work items.
 
 `spawn.sh <type> <name> --project "$(pwd)" [--team <team>] [--model <cli-model-id>] [--boot-prompt "<ticket>"] [--no-wait] [--fresh]`
 pre-joins `<name>`, opens a tmux pane (inside tmux) or a new terminal, and starts
