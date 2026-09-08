@@ -69,11 +69,12 @@ Each audit:
    standard so already-incorporated improvements are not proposed again.
 2. Classify each difference:
    - `Local` — project-specific; keep as-is.
-   - `Promote` — a candidate to fold into the Org Standard.
+   - `Promote` — a durable, technology-neutral candidate to fold into the Org Standard; one project's evidence can suffice for nomination when reuse is plausible.
    - `Remove-Migrate` — outdated, duplicate, or conflicting; a candidate to clean up.
    - `Needs-decision` — not enough evidence to decide.
-3. Review and adjust, then reflect only approved items into the Org Standard
-   (PR if Git-managed, otherwise a direct edit).
+3. Identify each proposal's change target. Reflect only approved Org Standard
+   changes there (PR if Git-managed, otherwise a direct edit). Hand Project-side
+   cleanup to `project-scaffold` for its change plan and approval flow.
 
 Items generic enough for the Built-in Starter are only flagged `Global Promote`;
 folding them in is `project-scaffold-maintain` (maintainers only).

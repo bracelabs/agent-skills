@@ -119,9 +119,10 @@ not require a separate approval or prevent application.
 
 A first Org Standard — from the Built-in Starter or a Bootstrap — is thin: a
 starting hypothesis, not a finished standard. Apply it to one or more
-representative repositories, then run audits repeatedly over time. Promote only
-the conventions supported by repeated evidence; this prevents a single project's
-stack or domain rules from becoming organization-wide defaults.
+representative repositories, then run audits repeatedly over time. Audit may
+nominate a durable, technology-neutral convention found in one project; explain
+its reuse case and supporting evidence. Human review decides adoption. A project's
+stack or domain rules remain local.
 
 ## 3. Use the Org Standard in a project
 
@@ -183,12 +184,15 @@ compatibility risk, and the smallest proposed change.
 | Classification | Meaning |
 | --- | --- |
 | `Local` | Keep it in the project: it is justified by the stack, domain, or delivery model. |
-| `Promote` | A durable, technology-neutral convention that belongs in the Org Standard. |
+| `Promote` | A durable, technology-neutral convention plausibly reusable in other projects; a candidate for the Org Standard. |
 | `Remove-Migrate` | An outdated, duplicate, or conflicting convention that should be cleaned up. |
 | `Needs-decision` | There is not enough evidence to establish intent; identify what would settle it. |
 
-An audit is read-only by default. Approve individual `Promote` or
-`Remove-Migrate` items before changing the Org Standard. For a Git-managed Org
+An audit is read-only by default. Each proposal identifies its change target:
+Project, Org Standard, or none. Hand Project-side cleanup to `project-scaffold`
+for its change plan and approval flow. Split proposals affecting both targets.
+Approve individual `Promote` or `Remove-Migrate` items targeting the Org Standard
+before changing it. For a Git-managed Org
 Standard, make the minimal change on a branch and open a PR. For a
 non-Git-managed one, make the minimal direct edit and re-read it to verify the
 result.
@@ -220,7 +224,8 @@ then create a branch and PR. Do not merge or release.
   Standard later.
 - Bootstrap when you already have several mature projects that demonstrate the
   conventions you want to share.
-- Treat a convention seen in only one project as `Local` unless the user endorses
-  it for the organization.
+- In audit, single-project evidence can support a Promote candidate when reuse
+  is plausible; adoption still requires approval. Bootstrap retains its stricter
+  initial-selection rule: multiple sources or explicit user endorsement.
 - Keep every application and update flow as: **change plan → approval → minimal
   change**.

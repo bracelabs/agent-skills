@@ -59,20 +59,27 @@ Run the [analysis method](references/analysis.md) and put each finding in exactl
 one bucket:
 
 - **Local** — justified by the project's stack, domain, or delivery model; keep as-is.
-- **Promote** — a durable, technology-neutral convention the Org Standard should adopt.
+- **Promote** — a durable, technology-neutral convention plausibly reusable in other projects; a candidate for the Org Standard even if observed in only one project.
 - **Remove / Migrate** — outdated, duplicated, or contradicting the current standard; propose cleanup.
 - **Needs-decision** — evidence is insufficient to tell whether the difference is intentional; list what would resolve it.
 
 For each finding give: evidence (exact files), affected scope, benefit,
-compatibility risk, and the smallest proposed change. A single-project domain rule
+compatibility risk, the smallest proposed change, and its change target (Project,
+Org Standard, or none). A single-project domain rule
 is never a common convention.
 
-## Reflect approved Promote items
+## Route proposals and reflect approved Org Standard changes
 
 Default output is read-only: an audit report plus a proposal. Do not modify the
 audited project.
 
-After the user explicitly approves specific Promote / Remove-Migrate items:
+Route each proposal by its change target. Project-side Remove-Migrate items are
+handoffs to `project-scaffold` for its application plan and approval flow; do not
+edit the Org Standard to resolve a Project-only issue. Org Standard cleanup can
+remain in audit. Split changes affecting both targets for separate approval.
+
+After the user explicitly approves specific Promote / Remove-Migrate items
+targeting the Org Standard:
 
 - **Org Standard is git-managed:** create a branch in the Org Standard repo, apply
   the smallest change, commit, and open a PR (`gh pr create`) describing source

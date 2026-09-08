@@ -77,9 +77,14 @@ the conflict before recommending a change. Differences alone are not violations.
 | Bucket | Test |
 | --- | --- |
 | **Local** | Explained by the target's stack, domain, or delivery model. |
-| **Promote** | Durable, technology-neutral, seen across multiple targets or user-endorsed; the Org Standard should adopt it. |
+| **Promote** | Durable, technology-neutral, and plausibly reusable in other projects; a candidate for the Org Standard. |
 | **Remove / Migrate** | Outdated, duplicated, or contradicts the current standard. |
 | **Needs-decision** | Cannot tell whether it is intentional; name the evidence that would settle it. |
+
+For audit, a convention observed in one project may be a Promote candidate without
+prior endorsement. Explain its reuse case and record the extent of supporting
+evidence; observation count informs adoption, not eligibility for nomination.
+Keep project-specific domain rules Local. Candidate classification is not approval.
 
 For Bootstrap, "Promote" means "include in the initial Org Standard"; a convention
 seen in only one source stays out unless the user endorses it.
@@ -87,7 +92,10 @@ seen in only one source stays out unless the user endorses it.
 ## 4. Report
 
 One finding per row: bucket, evidence (files), affected scope, benefit,
-compatibility risk, smallest change. Flag any Promote item generic enough for the
+compatibility risk, smallest change, and change target (Project, Org Standard, or
+none). Split proposals that affect both into separately approvable changes.
+Project cleanup goes to `project-scaffold`; audit may reflect only changes whose
+target is the Org Standard. Flag any Promote item generic enough for the
 Built-in Starter as a **Global Promote candidate**.
 
 Include applied and current baseline identities, inspection scope, missing listed
