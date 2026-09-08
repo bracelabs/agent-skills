@@ -13,6 +13,14 @@ Standard to a project is `project-scaffold`'s job.
 This skill owns the scan-and-diff method; `project-scaffold` reuses it for
 Bootstrap. See [analysis.md](references/analysis.md).
 
+**Requires the `project-scaffold` skill installed alongside it.** The read
+boundary and the `.project-scaffold.json` contract are defined once, in that
+skill's [scope.md](../project-scaffold/references/scope.md), and this skill reads
+them from there rather than keeping a second copy that could drift. If the file
+is not present, say so and stop: guessing at a read boundary is the one failure
+this design exists to prevent. Install it with
+`gh skill install bracelabs/agent-skills project-scaffold`.
+
 ## Resolve the comparison baseline
 
 1. Locate the Org Standard. Prefer the project's `.project-scaffold.json`

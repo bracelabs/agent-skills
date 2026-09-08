@@ -72,18 +72,30 @@ claim a complete migration review.
 
 The marker names the applied version; resolve it before scanning.
 
-| `scaffoldSource` | `scaffoldRef` | Read the applied version from | Report as |
+First reach the source, then resolve the ref. Both steps can fail, and every
+failure falls back to the current standard rather than stopping the run.
+
+| Source | `scaffoldRef` | Read the applied version from | Report as |
 | --- | --- | --- | --- |
-| Local path, Git-managed | SHA, resolvable | `git show <SHA>:<prefix>` | that SHA |
-| Local path, Git-managed | SHA unresolvable | current on-disk payload | baseline "current" |
-| Local path, not Git-managed | timestamp | current on-disk payload | baseline "current" |
-| Git remote, clone reachable | SHA, resolvable | `git show <SHA>:<prefix>` in the matching clone, else a fresh clone under `$PROJECT_SCAFFOLD_HOME/.cache/<sanitized-remote>/` | that SHA |
-| Git remote, unreachable | any | nothing | coverage gap; known scope only |
+| Reached, Git-managed | SHA, resolvable there | `git show <SHA>:<prefix>` | that SHA |
+| Reached, Git-managed | SHA not resolvable there — rebased, force-pushed, or pruned | current payload | baseline "current"; the applied SHA no longer exists |
+| Reached, Git-managed | timestamp — the standard had no commit when applied | current payload | baseline "current"; the applied version was never committed |
+| Reached, not Git-managed | timestamp | current on-disk payload | baseline "current" |
+| Unreachable — remote down or unauthorized, local path gone | any | nothing | coverage gap; known scope only |
 | Marker absent or unreadable | — | current standard | baseline "current"; origin of a difference cannot be established |
+
+Reaching the source: a local `scaffoldSource` is the standard directory itself. A
+remote is read from a local clone of that remote if one exists — `git fetch` it
+first — else from a fresh clone under
+`$PROJECT_SCAFFOLD_HOME/.cache/<sanitized-remote>/`.
 
 `<prefix>` is the payload directory relative to the repository: the repo root
 when it holds the standard, or `scaffold/` when the parent is the repository.
 Ask which is intended if both are plausible.
+
+Falling back to "current" is never silent: name the reason in the report's
+coverage limits, and treat differences as Needs-decision where the missing
+applied version is what would have settled their origin.
 
 A config absent at a successfully resolved version means default scope — that is
 a resolved answer, not a failed lookup. A cache clone is read-only for

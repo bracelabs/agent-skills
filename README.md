@@ -7,8 +7,8 @@ Agent skills published for install with [`gh skill`](https://cli.github.com/manu
 | Skill | Purpose |
 | --- | --- |
 | `agmsg-team` | In an environment with [agmsg](https://github.com/fujibee/agmsg) and both the `claude` / `codex` CLIs installed, form a peer team with the session's selected model as Task Owner and split implementation, investigation, QA, review, and consultation across roles. Startable from Claude Code or Codex. |
-| `project-scaffold` | Create an Org Standard and apply it to projects. Supports starting from the Built-in Starter, bootstrapping from existing projects/docs, or using an existing Org Standard. |
-| `project-scaffold-audit` | Diff a project against its Org Standard and classify each difference as `Local` / `Promote` / `Remove-Migrate` / `Needs-decision`. After review, reflect approved changes into the Org Standard. |
+| `project-scaffold` | Create an Org Standard and apply it to projects. Supports starting from the Built-in Starter, bootstrapping from existing projects/docs, or using an existing Org Standard. Install together with `project-scaffold-audit`. |
+| `project-scaffold-audit` | Diff a project against its Org Standard and classify each difference as `Local` / `Promote` / `Remove-Migrate` / `Needs-decision`. After review, reflect approved changes into the Org Standard. Install together with `project-scaffold`. |
 | `project-scaffold-maintain` | For maintainers of this repo: review the improvements an audit marked `Global Promote` and open a PR folding them into the Built-in Starter. |
 
 ## Install

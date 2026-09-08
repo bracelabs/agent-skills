@@ -40,8 +40,10 @@ boundary.
 
 Install `project-scaffold` to create and apply an Org Standard, and
 `project-scaffold-audit` to learn from applied projects and improve that Org
-Standard. Both are required when you create an Org Standard by bootstrapping from
-existing projects.
+Standard. **Install both.** They share one definition of the read boundary and
+one marker contract, each held in the other skill's files: audit reads the scope
+contract from `project-scaffold`, and `project-scaffold` Bootstrap reads the
+analysis method from audit. Either one alone will stop rather than guess.
 
 ```sh
 gh skill install bracelabs/agent-skills project-scaffold

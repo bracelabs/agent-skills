@@ -32,10 +32,10 @@ project:
   remote: <Git remote URL, or null>
   isGitWorktree: <true|false>
 standard:
-  name: <standardName from the marker, or null>
-  source: <scaffoldSource, or null when no marker>
-  appliedRef: <SHA or timestamp, or null>
-  appliedRefExact: <true|false>
+  name: <marker standardName, else how the resolved standard is identified>
+  source: <the Org Standard actually compared against — always recorded>
+  appliedRef: <marker scaffoldRef; null when unknown>
+  appliedRefExact: <marker scaffoldRefExact; true when absent, null when unknown>
   currentRef: <SHA, timestamp, or null>
   currentDirty: <true|false>
 baseline: <applied+current | current-only>
@@ -53,12 +53,21 @@ findings:
 ---
 ```
 
-`baseline: current-only` means the applied version could not be resolved, so the
-origin of a difference cannot be established. Say that in the prose too.
+`source` always names the standard the audit actually compared against, including
+when there is no marker and it was resolved from `$PROJECT_SCAFFOLD_HOME`. A
+report that cannot say what it was measured against is not comparable with any
+other report. "The applied version is unknown" is expressed by
+`appliedRef: null`, not by dropping the source.
 
-When the marker records `appliedRefExact: false`, the standard had uncommitted
-changes when it was applied: differences traceable to that are Needs-decision,
-not project drift. Note this next to any finding it touches.
+`baseline: current-only` means the applied version could not be resolved, so the
+origin of a difference cannot be established. Say that in the prose too, with the
+reason from the resolution table's "Report as" column in `coverageLimits`.
+
+`appliedRefExact` carries the marker's `scaffoldRefExact` through under the
+header's naming. When it is `false`, the standard had uncommitted changes when it
+was applied, so `appliedRef` does not name what actually landed: differences
+traceable to that are Needs-decision, not project drift. Note this next to any
+finding it touches.
 
 ## Findings
 
