@@ -1,0 +1,10 @@
+{
+  "operationalFiles": [
+    "docs/01_product/README.md",
+    "docs/02_requirements/README.md",
+    "docs/03_spec/README.md",
+    "docs/04_decisions/README.md",
+    "docs/05_discussions/README.md",
+    "docs/06_execution/README.md"
+  ]
+}

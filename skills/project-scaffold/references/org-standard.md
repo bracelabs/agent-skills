@@ -76,6 +76,14 @@ executing workflows/skills. Report invalid entries before scanning them. Listed
 files may be inspected even when there is no matching payload in the standard.
 This is a read scope, not permission to apply every listed file.
 
+The Built-in Starter includes a config listing the six lifecycle-directory
+README.md files under `docs/`. Copy this config when creating an Org Standard;
+it remains standard metadata and is not applied to the Project. Skill updates
+do not update an existing Org Standard: propose merging the relevant entries
+into its config, preserving custom entries and using its actual directory names.
+Read listed README files as operational guides only; listing them does not
+permit reading product specifications added to those files.
+
 ### Recovering the applied scope
 
 For a previously scaffolded project, read `.project-scaffold.json` and resolve

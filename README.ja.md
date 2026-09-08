@@ -44,6 +44,8 @@ AIエージェント向けの初回セットアップ資料は、英語の
 
 Org Standardの`scaffold.config.json`に`operationalFiles`（プロジェクト相対のファイルパス一覧）を指定すると、共通Skill、PRテンプレート、CI、独自の運用ガイドもBootstrap・適用・auditの検査対象にできる。アプリケーションコードや未指定のリンク先には読み取りを広げない。`tmp/`と`docs/`はStarterの既定値で、組織に合わせて変更できる。
 詳細は[検査範囲の定義](skills/project-scaffold/references/org-standard.md#operational-inspection-scope)を参照。
+Starterのconfigには、`docs/01_product/`〜`docs/06_execution/`のREADMEを列挙している。
+既存のOrg Standardでは、内容を確認して必要な項目をconfigに追加する。Skillの更新だけでは組織の検査範囲は変わらない。
 Bootstrapでは参照プロジェクトの適用元から検査範囲を取得し、再適用では新旧両方の範囲を確認する。Standardの作業ツリーに未コミット変更がある場合は通知するが、適用は妨げない。
 
 初回に作るOrg Standardは内容が薄く、複数回auditを繰り返すことで内容が充実していく。Standardに足したい・直したい点がたまってきたら`project-scaffold-audit`を実行する。

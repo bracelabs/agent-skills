@@ -55,6 +55,9 @@ generic.
 ## Verify and hand off
 
 - Run `gh skill publish --dry-run` from the repo root; it must pass.
+- When adding or renaming operational guides outside the default inspection
+  scope, update `starter/scaffold.config.json` and verify its listed paths exist
+  in the mapped project layout. Keep product specifications out of that list.
 - Summarize: candidates applied, candidates rejected (with reason), files changed.
 - Commit on a branch and open a PR (`gh pr create`) describing source evidence
   (which audit, which project), scope, and compatibility risk.

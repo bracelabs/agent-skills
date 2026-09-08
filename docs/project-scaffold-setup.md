@@ -93,7 +93,14 @@ Keep `AGENTS.md.tmpl`, `README.md.tmpl`, and `gitignore` as source filenames in
 the standard; rename only when applying to a project. Root `README.md` and
 `.gitignore` are standard-repository metadata, not project payload.
 
-For custom operational files, add `scaffold.config.json` at the standard root:
+The Starter includes `scaffold.config.json` listing the six lifecycle-directory
+README files under `docs/`. This config stays in the Org Standard; it is not
+copied into the Project. Existing Org Standards need an approved merge of the
+relevant entries, preserving their custom paths; updating the skill alone does
+not extend their inspection scope.
+
+For custom operational files, add entries to `scaffold.config.json` at the
+standard root (create it if absent; preserve existing entries):
 
 ```json
 {"operationalFiles":["handbook/AGENTS.md",".github/PULL_REQUEST_TEMPLATE.md",".github/workflows/review.yml"]}
