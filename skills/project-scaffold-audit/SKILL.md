@@ -81,9 +81,20 @@ remain in audit. Split changes affecting both targets for separate approval.
 After the user explicitly approves specific Promote / Remove-Migrate items
 targeting the Org Standard:
 
-- **Org Standard is git-managed:** create a branch in the Org Standard repo, apply
-  the smallest change, commit, and open a PR (`gh pr create`) describing source
-  evidence, scope, and risk. Do not merge.
+- **Org Standard is git-managed:** create a branch from the checked current
+  standard, apply the smallest change, and commit only approved changes. Preserve
+  unrelated working-tree edits. Then choose the handoff:
+  - **A GitHub remote (including GitHub Enterprise) is configured:** push the
+    branch and open a PR (`gh pr create`) against the intended base, describing
+    source evidence, scope, and risk. Resolve ambiguous remote/base choices before
+    pushing. Do not merge.
+  - **No remote, or no remote supported by the available PR tooling:** finish
+    locally and report the branch, commit, diff, and reason no PR was opened.
+    Do not create a remote or push merely to complete the audit. Use another
+    host's review workflow only when the user requests it and tooling is available.
+  Authentication, network, or permission failures on a supported remote are
+  incomplete PR handoffs, not local-only completion; preserve the local commit
+  and report the remaining step.
 - **Org Standard is not git-managed:** apply the smallest change directly to
   `scaffold/` files, then re-read them and report what changed.
 

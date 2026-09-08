@@ -199,10 +199,13 @@ An audit is read-only by default. Each proposal identifies its change target:
 Project, Org Standard, or none. Hand Project-side cleanup to `project-scaffold`
 for its change plan and approval flow. Split proposals affecting both targets.
 Approve individual `Promote` or `Remove-Migrate` items targeting the Org Standard
-before changing it. For a Git-managed Org
-Standard, make the minimal change on a branch and open a PR. For a
-non-Git-managed one, make the minimal direct edit and re-read it to verify the
-result.
+before changing it. For a Git-managed Org Standard, make the minimal change on a
+branch and commit it. With a configured GitHub remote, push and open a PR. Without
+a remote supported by the available PR tooling, finish locally with the branch,
+commit, and diff; do not create a remote or push as a workaround. An access or
+network failure on a supported remote leaves the PR handoff incomplete and must
+be reported. For a non-Git-managed standard, make the minimal direct edit and
+re-read it to verify the result.
 
 Audit compares the project with the applied version, then checks the current
 standard before proposing changes. Already-incorporated improvements are reported

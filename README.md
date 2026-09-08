@@ -76,8 +76,10 @@ Each audit:
    - `Remove-Migrate` — outdated, duplicate, or conflicting; a candidate to clean up.
    - `Needs-decision` — not enough evidence to decide.
 3. Identify each proposal's change target. Reflect only approved Org Standard
-   changes there (PR if Git-managed, otherwise a direct edit). Hand Project-side
-   cleanup to `project-scaffold` for its change plan and approval flow.
+   changes there: a branch and commit for Git-managed standards, followed by a
+   PR when a supported remote is configured; otherwise a local diff report.
+   Non-Git standards receive a direct edit. Hand Project-side cleanup to
+   `project-scaffold` for its change plan and approval flow.
 
 Items generic enough for the Built-in Starter are only flagged `Global Promote`;
 folding them in is `project-scaffold-maintain` (maintainers only).

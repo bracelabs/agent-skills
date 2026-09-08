@@ -59,7 +59,7 @@ Bootstrapでは参照プロジェクトの適用元から検査範囲を取得�
    - `Remove-Migrate` — 古い・重複・標準と矛盾。整理する候補。
    - `Needs-decision` — 判断材料が足りない。
 3. 提案ごとに変更先を明記し、Org Standardへの変更は承認したものだけ反映する
-   （Git管理ならPR、していなければ直接編集）。Project側の整理は
+   （Git管理ならブランチ・コミットを作成し、PR作成に対応したリモートがあればPR、なければローカルの差分報告まで。Git管理していなければ直接編集）。Project側の整理は
    `project-scaffold`へ引き渡し、変更計画の提示と承認を経て適用する。
 
 汎用性が高くBuilt-in Starterにも入れるべきものは`Global Promote`としてフラグするだけに留める。取り込みは`project-scaffold-maintain`（メンテナー向け）。
