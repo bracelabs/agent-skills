@@ -55,6 +55,9 @@ PR templates, CI workflows, or handbook guides. Bootstrap, apply, and audit use
 that scope without reading application code or following unlisted links. `tmp/`
 and `docs/` are Starter defaults; organizations may choose other boundaries.
 See the [scope contract](skills/project-scaffold/references/org-standard.md#operational-inspection-scope).
+Bootstrap recovers that scope from a reference project's applied standard;
+re-application checks both old and new scopes. Uncommitted Standard changes are
+reported when applying a working tree, but do not block it.
 
 A first Org Standard is thin; it fills out as you run audits repeatedly across
 several projects. Run an audit whenever a project has accumulated conventions

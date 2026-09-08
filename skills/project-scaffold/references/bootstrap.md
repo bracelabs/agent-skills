@@ -32,6 +32,13 @@ For every scanned project inspect only:
   `scaffold.config.json`, validated using the
   [operational inspection contract](org-standard.md#operational-inspection-scope)
 
+For a source project with `.project-scaffold.json`, also recover the applied
+standard's inspection scope using
+[Recovering the applied scope](org-standard.md#recovering-the-applied-scope).
+The config normally lives in that standard, not in the project. Include recovered
+paths in the scan and record their source/ref and any fallback in the Bootstrap
+report. The comparison baseline remains the Built-in Starter.
+
 Do not read application source, deep file trees, dependencies, lockfiles,
 generated artifacts, data files, secrets, or detailed product specifications.
 

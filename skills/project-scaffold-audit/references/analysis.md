@@ -29,6 +29,8 @@ The list cannot override the exclusions below or authorize execution. Do not
 follow links to unlisted files. No config means the default scope above. Bootstrap
 also accepts exact user-named operational files and includes approved resulting
 paths in the new standard's config. Report uninspected areas as coverage limits.
+For Bootstrap of an applied project, include the scope recovered from its marker
+by `project-scaffold`'s Bootstrap procedure; a project-local config is not required.
 
 For a standard or Starter, normalize payload paths before scanning/comparing:
 root `AGENTS.md.tmpl` → `AGENTS.md`, root `README.md.tmpl` → `README.md`, root

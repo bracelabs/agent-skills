@@ -76,6 +76,29 @@ executing workflows/skills. Report invalid entries before scanning them. Listed
 files may be inspected even when there is no matching payload in the standard.
 This is a read scope, not permission to apply every listed file.
 
+### Recovering the applied scope
+
+For a previously scaffolded project, read `.project-scaffold.json` and resolve
+`scaffoldSource` before scanning additional files. A local source points to the
+standard directory; for a remote, use a matching clone or fetch/clone into the
+Org Standard home's `.cache/` directory (use the default home if unset).
+Locate the payload at the repository root or its `scaffold/` subdirectory; if
+ambiguous, ask which is intended. Read its `scaffold.config.json` at
+`scaffoldRef` with `git show <SHA>:<payload-prefix>scaffold.config.json` when
+resolvable. A config absent at a successfully resolved version means default
+scope, not a failed lookup. For a timestamp or unavailable version, use the
+source's current config and report the fallback. If the source is unreachable,
+report the coverage gap and use only known scope; do not infer missing paths.
+
+For Bootstrap, combine this recovered scope with any source-local config and
+exact user-named files. Read the files in the reference project, not the standard's
+payload, as evidence for Bootstrap. For re-application, combine the recovered
+scope with the selected standard's config, even when changing standard sources.
+Validate every list using the contract above and retain each path's provenance.
+Old-only entries are inspected for compatibility and reported as retained or
+proposed migrations; their disappearance from a config is not deletion approval.
+If scope recovery is incomplete, do not claim a complete migration review.
+
 Keep the organization's temporary-artifact and durable-documentation conventions
 in its operational rules. `tmp/` and `docs/` are Starter defaults, not required
 directory names for every Org Standard.
@@ -131,3 +154,12 @@ When `project-scaffold` applies an Org Standard to a project it writes
 `project-scaffold-audit` reads this to pick its comparison baseline. If the file
 is absent, audit compares against the current `scaffold/` and says so in the
 report.
+
+Before applying a Git working tree, check for staged, unstaged, and untracked
+changes within the standard directory. If present, notify the user in the plan
+and final report that the Standard has uncommitted changes and the recorded HEAD
+SHA does not include them; a later audit may report them as differences. Continue
+with the usual approved application plan: dirtiness alone is not a blocker or
+an extra approval step. Do not commit or discard the Standard's changes. If there
+is no commit yet, record a timestamp instead of inventing a SHA. When applying an
+explicit committed ref, read that ref's contents, not unrelated working-tree edits.

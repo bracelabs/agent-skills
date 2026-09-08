@@ -71,8 +71,13 @@ Validate the scaffold source and report any failure instead of applying:
 - ignore rules and operational instructions agree on the organization's chosen
   temporary-artifact boundary (the Starter uses an anchored `/tmp/` rule)
 - internal Markdown links resolve in the mapped project layout
-- if `.project-scaffold.json` will be read (re-apply / audit), its `scaffoldSource`
-  is reachable
+- recover the old inspection scope on re-application as described in
+  [org-standard.md](references/org-standard.md#recovering-the-applied-scope);
+  report unavailable history as a coverage limit, not as a failure of the new source
+
+When applying a Git working tree, check for uncommitted Standard changes and
+notify the user as described in [org-standard.md](references/org-standard.md#project-marker).
+Their presence alone does not prevent application.
 
 ## Apply an Org Standard to a project
 
@@ -86,6 +91,8 @@ Do not modify a project until the user approves a concrete plan.
    names. Resolve listed files from `scaffold.config.json` as documented in
    [org-standard.md](references/org-standard.md). Do not read application
    source, dependency trees, generated output, secrets, or product specifications.
+   On re-application, inspect the union of the recovered applied scope and the
+   selected standard's scope before planning changes, including old-only paths.
 3. Select only what the user requested or an approved `project-scaffold-audit`
    report identifies. An existing Org Standard is not permission to rewrite every
    difference.
@@ -97,7 +104,7 @@ Do not modify a project until the user approves a concrete plan.
    re-present and ask again.
 6. Write or update `.project-scaffold.json` at the project root: `scaffoldSource`,
    `scaffoldRef` (git commit SHA of the Org Standard when git-managed, else an ISO
-   8601 timestamp), `appliedAt`.
+   8601 timestamp; also use a timestamp if Git has no commit yet), `appliedAt`.
 7. Verify the changed operational files. Report target location, applied
    conventions, and remaining exceptions. If the target is not a git worktree,
    report verification without claiming git status.

@@ -108,6 +108,15 @@ The example prompts' narrower scopes can be extended by explicitly requesting
 these listed files. `tmp/` and `docs/` are Starter defaults; preserve the
 organization's chosen temporary-artifact and durable-documentation boundaries.
 
+For previously scaffolded reference projects, Bootstrap follows
+`.project-scaffold.json` to recover the applied standard's inspection scope.
+Re-application inspects both the old and selected standard's scopes, including
+old-only files; removing a path from the list does not authorize deleting it.
+Unavailable history is reported as a coverage limit. When applying a working
+tree with uncommitted Standard changes, report their presence and explain that
+the recorded SHA excludes them, so a later audit may show differences. This does
+not require a separate approval or prevent application.
+
 A first Org Standard — from the Built-in Starter or a Bootstrap — is thin: a
 starting hypothesis, not a finished standard. Apply it to one or more
 representative repositories, then run audits repeatedly over time. Promote only
