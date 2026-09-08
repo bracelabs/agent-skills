@@ -31,11 +31,23 @@ Bootstrap. See [analysis.md](references/analysis.md).
      version.
 3. If the Org Standard's identity is still ambiguous (e.g. no marker and more than
    one plausible Org Standard), ask the user before proceeding.
+4. Also resolve the current standard: use the explicitly selected branch/ref,
+   otherwise the remote default branch after fetch for a remote source, or the
+   on-disk content for a local source. Record its SHA and any uncommitted changes
+   (or timestamp for a non-Git source). Do not switch branches or discard edits
+   to read a version. Compare findings with this current version before proposing
+   changes; if unavailable, report proposals as provisional and do not reflect
+   them until the current version can be checked.
+
+For each version, resolve the payload directory: the repo root when it contains
+the standard, or `scaffold/` when the parent is Git-managed. If both are plausible,
+ask which is intended. Use that repository-relative prefix with `git show`.
 
 ## Inspection boundary
 
 Inspect only: shallow layout, root AGENTS.md, root README.md, root .gitignore,
-listed operational files, docs/README.md, docs/AGENTS.md, shallow docs
+listed operational files from `scaffold.config.json` (see
+[analysis.md](references/analysis.md)), docs/README.md, docs/AGENTS.md, shallow docs
 directories, and reusable files under `docs/00_templates/`. Do not read
 application source, dependency trees, generated output, secrets, or product
 specifications. Preserve existing work; treat repo-specific rules as intentional
@@ -67,6 +79,9 @@ After the user explicitly approves specific Promote / Remove-Migrate items:
   evidence, scope, and risk. Do not merge.
 - **Org Standard is not git-managed:** apply the smallest change directly to
   `scaffold/` files, then re-read them and report what changed.
+
+Recheck approved items against the current standard immediately before writing;
+skip already-incorporated items and re-present materially changed proposals.
 
 Never auto-apply. Never push or open a PR without approval of the exact item list.
 

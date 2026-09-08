@@ -34,15 +34,57 @@ Org Standard, `project-scaffold` does not copy the source verbatim:
 | everything else | same relative path |
 
 **Not copied** — these are scaffold-repo metadata, never payload: `.git/`, the
-scaffold's own `README.md`, and the scaffold's own `.gitignore` (dotted). A
+root `scaffold.config.json`, the scaffold's root `README.md`, and its root
+`.gitignore` (dotted). Nested README.md and .gitignore files remain payload. A
 git-managed Org Standard keeps a dotted `.gitignore` for its own hygiene; the
 project's `.gitignore` is built from the dotless `gitignore` payload.
+
+Keep source filenames inside the Org Standard; rename only when applying to a
+Project or normalizing a comparison. Reject duplicate destination paths (for
+example, both `AGENTS.md` and `AGENTS.md.tmpl`) and unsupported `*.tmpl` names.
+If an older standard has already renamed its root README or ignore payload,
+ask which files are payload before proposing a migration; do not silently omit them.
+
+## Operational inspection scope
+
+An optional root `scaffold.config.json` declares additional operational files,
+using exact project-relative paths (not source template names):
+
+```json
+{
+  "operationalFiles": [
+    "handbook/AGENTS.md",
+    "handbook/README.md",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/workflows/review.yml",
+    ".agents/skills/review/SKILL.md"
+  ]
+}
+```
+
+Bootstrap, apply, and audit add these paths to their default inspection scope.
+No config means the documented default scope, not unrestricted scanning. During
+Bootstrap the user may also name exact operational files; include the approved
+resulting paths in the synthesized config. Record missing listed files as missing.
+Unlisted files remain uninspected, including files linked from a listed file.
+
+Require a JSON object with an `operationalFiles` array of unique, nonempty relative
+file paths. Reject absolute paths, `..` segments, globs, directory entries, and
+symlinks escaping the target root. Listing a path never authorizes reading secrets,
+application code, dependencies, generated output, or product specifications, or
+executing workflows/skills. Report invalid entries before scanning them. Listed
+files may be inspected even when there is no matching payload in the standard.
+This is a read scope, not permission to apply every listed file.
+
+Keep the organization's temporary-artifact and durable-documentation conventions
+in its operational rules. `tmp/` and `docs/` are Starter defaults, not required
+directory names for every Org Standard.
 
 ## Creating it — three patterns
 
 ### 1. Built-in Starter
 
-Copy `starter/` from the skill into `scaffold/`, applying the rename map above.
+Copy `starter/` from the skill into `scaffold/`, preserving source filenames.
 Adjust only what the user asks for. Do not carry over any product's domain rules,
 names, or services.
 

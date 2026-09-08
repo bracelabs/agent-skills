@@ -42,11 +42,14 @@ AIエージェント向けの初回セットアップ資料は、英語の
 
 ### project-scaffold-audit — Org Standardを育てる
 
+Org Standardの`scaffold.config.json`に`operationalFiles`（プロジェクト相対のファイルパス一覧）を指定すると、共通Skill、PRテンプレート、CI、独自の運用ガイドもBootstrap・適用・auditの検査対象にできる。アプリケーションコードや未指定のリンク先には読み取りを広げない。`tmp/`と`docs/`はStarterの既定値で、組織に合わせて変更できる。
+詳細は[検査範囲の定義](skills/project-scaffold/references/org-standard.md#operational-inspection-scope)を参照。
+
 初回に作るOrg Standardは内容が薄く、複数回auditを繰り返すことで内容が充実していく。Standardに足したい・直したい点がたまってきたら`project-scaffold-audit`を実行する。
 
 1回のaudit:
 
-1. プロジェクトとOrg Standardの差分を洗い出す。
+1. 適用時のOrg Standardとの差分を洗い出し、現行版にも照合する。取り込み済みの改善は再提案しない。
 2. 各差分を分類する:
    - `Local` — このプロジェクト固有。そのまま残す。
    - `Promote` — Org Standardに取り込む候補。

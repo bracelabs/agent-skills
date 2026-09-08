@@ -64,10 +64,13 @@ a valid choice. Never create a remote or push without explicit approval.
 
 Validate the scaffold source and report any failure instead of applying:
 
-- every `*.tmpl` and `gitignore` resolves to a rename-map target; no target
-  collides with the scaffold's own `README.md` / `.gitignore`
-- the payload's `.gitignore` keeps an anchored `/tmp/` rule
-- internal Markdown links inside the scaffold resolve
+- payload paths resolve through the rename map without duplicate destinations;
+  exclude root scaffold metadata before mapping
+- `scaffold.config.json`, if present, satisfies the operational inspection contract
+  in [org-standard.md](references/org-standard.md)
+- ignore rules and operational instructions agree on the organization's chosen
+  temporary-artifact boundary (the Starter uses an anchored `/tmp/` rule)
+- internal Markdown links resolve in the mapped project layout
 - if `.project-scaffold.json` will be read (re-apply / audit), its `scaffoldSource`
   is reachable
 
@@ -79,15 +82,17 @@ Do not modify a project until the user approves a concrete plan.
    Preserve current user work either way.
 2. Inspect only permitted metadata of the target: shallow layout, root AGENTS.md,
    root README.md, root .gitignore, listed operational files, docs/README.md,
-   docs/AGENTS.md, and shallow docs directory names. Do not read application
+   docs/AGENTS.md, reusable docs/00_templates/ files, and shallow docs directory
+   names. Resolve listed files from `scaffold.config.json` as documented in
+   [org-standard.md](references/org-standard.md). Do not read application
    source, dependency trees, generated output, secrets, or product specifications.
 3. Select only what the user requested or an approved `project-scaffold-audit`
    report identifies. An existing Org Standard is not permission to rewrite every
    difference.
 4. Present the plan: each file/dir to create or change, the convention and its
    source, compatibility impact, intentional local exceptions left untouched,
-   whether `/tmp/` is added to `.gitignore`, and the matching AGENTS.md
-   temporary-work rule.
+   any ignore-rule changes, and the matching operational rule separating temporary
+   artifacts from durable documentation.
 5. On approval, make only the listed changes. If the plan changes materially,
    re-present and ask again.
 6. Write or update `.project-scaffold.json` at the project root: `scaffoldSource`,
@@ -121,26 +126,20 @@ docs/
 
 ## Temporary working files
 
-Use `tmp/<work-item>/` at the project root for artifacts that must not be
-committed: scratch notes, one-off exports, rendered previews, logs, agent handoff
-files. `docs/` is the versioned source of truth; never use `docs/tmp/`.
-
-- Every Org Standard's root `.gitignore` keeps an anchored `/tmp/` rule,
-  preserving existing rules.
-- The root AGENTS.md documents the `tmp/<work-item>/` convention and its `docs/`
-  boundary. For an existing project, include that AGENTS.md change in the approved
-  plan.
-- Create `tmp/<work-item>/` only when needed; it is untracked, so add no
-  placeholders.
-- Do not use a system `/tmp/...` path for artifacts shared between agents in one
-  repo.
+Follow the target project's existing rules for working artifacts during the run.
+The Starter defaults to `tmp/<work-item>/`, an anchored `/tmp/` ignore rule, and
+`docs/` for durable documentation. It excludes `docs/tmp/` and system `/tmp/`
+for shared repo artifacts. An Org Standard may choose other locations and place
+its instructions in other operational files. Preserve those choices; include any
+boundary changes in the approved plan. Create untracked working directories only
+when needed, without placeholders.
 
 ## Finish
 
 - Verify the created or changed tree and read the key operational files.
-- When `.gitignore` is created or changed, verify the anchored `/tmp/` rule.
-- When AGENTS.md is created or changed, verify it documents the `tmp/<work-item>/`
-  convention and its `docs/` boundary.
+- Verify changed ignore rules and operational instructions preserve the chosen
+  temporary-artifact / durable-documentation boundary. For the unchanged Starter
+  convention, check `tmp/<work-item>/`, anchored `/tmp/`, and the `docs/` boundary.
 - Report target location, main files, and intentional omissions.
 
 ## Do not edit the Built-in Starter during a run

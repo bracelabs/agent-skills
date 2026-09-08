@@ -49,13 +49,21 @@ On first run, choose how to obtain the Org Standard:
 
 ### project-scaffold-audit — grow the Org Standard
 
+Org Standards can list additional operational files in `scaffold.config.json`
+(`operationalFiles`: exact project-relative file paths), such as shared skills,
+PR templates, CI workflows, or handbook guides. Bootstrap, apply, and audit use
+that scope without reading application code or following unlisted links. `tmp/`
+and `docs/` are Starter defaults; organizations may choose other boundaries.
+See the [scope contract](skills/project-scaffold/references/org-standard.md#operational-inspection-scope).
+
 A first Org Standard is thin; it fills out as you run audits repeatedly across
 several projects. Run an audit whenever a project has accumulated conventions
 worth standardizing.
 
 Each audit:
 
-1. Diff the project against the Org Standard.
+1. Diff the project against its applied Org Standard, then check the current
+   standard so already-incorporated improvements are not proposed again.
 2. Classify each difference:
    - `Local` — project-specific; keep as-is.
    - `Promote` — a candidate to fold into the Org Standard.

@@ -89,6 +89,25 @@ The Org Standard's content lives in `scaffold/` under `PROJECT_SCAFFOLD_HOME`
 to use another location. After the contents are approved, Git management, creating
 a remote, and pushing are separate choices that require explicit approval.
 
+Keep `AGENTS.md.tmpl`, `README.md.tmpl`, and `gitignore` as source filenames in
+the standard; rename only when applying to a project. Root `README.md` and
+`.gitignore` are standard-repository metadata, not project payload.
+
+For custom operational files, add `scaffold.config.json` at the standard root:
+
+```json
+{"operationalFiles":["handbook/AGENTS.md",".github/PULL_REQUEST_TEMPLATE.md",".github/workflows/review.yml"]}
+```
+
+Bootstrap, apply, and audit inspect those exact project-relative paths in addition
+to their default scope. During Bootstrap, name extra source files explicitly.
+Lists do not permit reading application code, secrets, or product specifications,
+or following unlisted links. See the
+[scope contract](../skills/project-scaffold/references/org-standard.md#operational-inspection-scope).
+The example prompts' narrower scopes can be extended by explicitly requesting
+these listed files. `tmp/` and `docs/` are Starter defaults; preserve the
+organization's chosen temporary-artifact and durable-documentation boundaries.
+
 A first Org Standard — from the Built-in Starter or a Bootstrap — is thin: a
 starting hypothesis, not a finished standard. Apply it to one or more
 representative repositories, then run audits repeatedly over time. Promote only
@@ -164,6 +183,12 @@ An audit is read-only by default. Approve individual `Promote` or
 Standard, make the minimal change on a branch and open a PR. For a
 non-Git-managed one, make the minimal direct edit and re-read it to verify the
 result.
+
+Audit compares the project with the applied version, then checks the current
+standard before proposing changes. Already-incorporated improvements are reported
+without a new Promote proposal. The report identifies both baselines and any
+inspection limits; if the applied version is unavailable, it states that it used
+the current version only.
 
 ## 5. Improve the Built-in Starter only when appropriate
 

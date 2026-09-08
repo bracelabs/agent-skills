@@ -28,6 +28,9 @@ For every scanned project inspect only:
 - a root package or workspace manifest only to detect an intentional monorepo shape
 - `docs/README.md`, `docs/AGENTS.md`, and shallow documentation-directory names
 - reusable documents under `docs/00_templates/`
+- exact operational files named by the user or the source's
+  `scaffold.config.json`, validated using the
+  [operational inspection contract](org-standard.md#operational-inspection-scope)
 
 Do not read application source, deep file trees, dependencies, lockfiles,
 generated artifacts, data files, secrets, or detailed product specifications.
@@ -40,8 +43,10 @@ scan each source, diff against the Built-in Starter, and classify. For Bootstrap
 treat conventions seen across multiple sources, or explicitly endorsed by the
 user, as the Org Standard baseline; keep single-source domain rules out unless asked.
 
-Present the synthesized Org Standard — structure, AGENTS.md rules, `.gitignore`,
-templates — for approval before writing `scaffold/`. Then follow the git
+Present the synthesized Org Standard — structure, operational rules, ignore
+payload, templates, and `scaffold.config.json` inspection scope — for approval
+before writing `scaffold/`. Preserve template source names according to the
+rename map; do not pre-render them as project files. Then follow the git
 follow-up in [org-standard.md](org-standard.md).
 
 Requires the `project-scaffold-audit` skill installed. If it is absent, tell the
