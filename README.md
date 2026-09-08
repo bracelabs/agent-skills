@@ -61,6 +61,8 @@ review; a skill update does not change an organization's inspection scope.
 Bootstrap recovers that scope from a reference project's applied standard;
 re-application checks both old and new scopes. Uncommitted Standard changes are
 reported when applying a working tree, but do not block it.
+Retained old-only paths and their provenance stay in the project's marker for
+later audits; retiring that inspection scope is an explicit application decision.
 
 A first Org Standard is thin; it fills out as you run audits repeatedly across
 several projects. Run an audit whenever a project has accumulated conventions
@@ -80,6 +82,9 @@ Each audit:
    PR when a supported remote is configured; otherwise a local diff report.
    Non-Git standards receive a direct edit. Hand Project-side cleanup to
    `project-scaffold` for its change plan and approval flow.
+
+After a Git handoff, return to the starting branch (normally `main`) and keep the
+proposal branch for review, so later audits do not use it as the current standard.
 
 Items generic enough for the Built-in Starter are only flagged `Global Promote`;
 folding them in is `project-scaffold-maintain` (maintainers only).

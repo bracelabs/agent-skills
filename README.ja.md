@@ -47,6 +47,7 @@ Org Standardの`scaffold.config.json`に`operationalFiles`（プロジェクト�
 Starterのconfigには、`docs/01_product/`〜`docs/06_execution/`のREADMEを列挙している。
 既存のOrg Standardでは、内容を確認して必要な項目をconfigに追加する。Skillの更新だけでは組織の検査範囲は変わらない。
 Bootstrapでは参照プロジェクトの適用元から検査範囲を取得し、再適用では新旧両方の範囲を確認する。Standardの作業ツリーに未コミット変更がある場合は通知するが、適用は妨げない。
+再適用後も残す旧パスと由来はProjectのmarkerに記録し、次回以降も監査する。検査対象から外す場合は適用計画に明記する。
 
 初回に作るOrg Standardは内容が薄く、複数回auditを繰り返すことで内容が充実していく。Standardに足したい・直したい点がたまってきたら`project-scaffold-audit`を実行する。
 
@@ -61,6 +62,8 @@ Bootstrapでは参照プロジェクトの適用元から検査範囲を取得�
 3. 提案ごとに変更先を明記し、Org Standardへの変更は承認したものだけ反映する
    （Git管理ならブランチ・コミットを作成し、PR作成に対応したリモートがあればPR、なければローカルの差分報告まで。Git管理していなければ直接編集）。Project側の整理は
    `project-scaffold`へ引き渡し、変更計画の提示と承認を経て適用する。
+
+Git管理ではPR作成やローカルでの作業完了後に開始時のブランチ（通常はmain）へ戻す。提案ブランチはレビュー用に残し、次回auditで現行標準と混同しないようにする。
 
 汎用性が高くBuilt-in Starterにも入れるべきものは`Global Promote`としてフラグするだけに留める。取り込みは`project-scaffold-maintain`（メンテナー向け）。
 

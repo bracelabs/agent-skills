@@ -46,7 +46,8 @@ ask which is intended. Use that repository-relative prefix with `git show`.
 ## Inspection boundary
 
 Inspect only: shallow layout, root AGENTS.md, root README.md, root .gitignore,
-listed operational files from `scaffold.config.json` (see
+listed operational files from `scaffold.config.json` and the marker's
+`retainedOperationalFiles` (see
 [analysis.md](references/analysis.md)), docs/README.md, docs/AGENTS.md, shallow docs
 directories, and reusable files under `docs/00_templates/`. Do not read
 application source, dependency trees, generated output, secrets, or product
@@ -81,8 +82,9 @@ remain in audit. Split changes affecting both targets for separate approval.
 After the user explicitly approves specific Promote / Remove-Migrate items
 targeting the Org Standard:
 
-- **Org Standard is git-managed:** create a branch from the checked current
-  standard, apply the smallest change, and commit only approved changes. Preserve
+- **Org Standard is git-managed:** record the starting branch (normally `main`,
+  or the starting commit for detached HEAD), then create a branch from the
+  checked current standard, apply the smallest change, and commit only approved changes. Preserve
   unrelated working-tree edits. Then choose the handoff:
   - **A GitHub remote (including GitHub Enterprise) is configured:** push the
     branch and open a PR (`gh pr create`) against the intended base, describing
@@ -95,6 +97,12 @@ targeting the Org Standard:
   Authentication, network, or permission failures on a supported remote are
   incomplete PR handoffs, not local-only completion; preserve the local commit
   and report the remaining step.
+  After the PR or local handoff, return to the recorded starting branch/commit
+  and verify it, including when PR creation fails. Keep the proposal branch and
+  commit for review; do not merge them into the starting branch. If returning
+  would overwrite existing work, stop and report the current branch and required
+  recovery instead of forcing the switch. A proposal branch left checked out must
+  not be reported as the accepted current standard.
 - **Org Standard is not git-managed:** apply the smallest change directly to
   `scaffold/` files, then re-read them and report what changed.
 

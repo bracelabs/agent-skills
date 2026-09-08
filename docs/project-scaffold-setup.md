@@ -75,7 +75,9 @@ the agent to read application code or secrets.
 ```text
 Use $project-scaffold to bootstrap an Org Standard from the reference projects
 below. Inspect only each root AGENTS.md, README.md, .gitignore, docs/README.md,
-docs/AGENTS.md, docs/00_templates/, and shallow directory structure. Propose
+docs/AGENTS.md, docs/00_templates/, shallow directory structure, and validated
+operational paths from source-local configs and each source project's marker
+(applied standard scope and retainedOperationalFiles). Propose
 only technology-neutral conventions shared by the sources. Do not change
 ~/.config/agent-skills/project-scaffold/scaffold/ until I approve the proposal.
 
@@ -111,14 +113,18 @@ to their default scope. During Bootstrap, name extra source files explicitly.
 Lists do not permit reading application code, secrets, or product specifications,
 or following unlisted links. See the
 [scope contract](../skills/project-scaffold/references/org-standard.md#operational-inspection-scope).
-The example prompts' narrower scopes can be extended by explicitly requesting
-these listed files. `tmp/` and `docs/` are Starter defaults; preserve the
+The example prompts include these validated operational paths. `tmp/` and
+`docs/` are Starter defaults; preserve the
 organization's chosen temporary-artifact and durable-documentation boundaries.
 
 For previously scaffolded reference projects, Bootstrap follows
 `.project-scaffold.json` to recover the applied standard's inspection scope.
 Re-application inspects both the old and selected standard's scopes, including
 old-only files; removing a path from the list does not authorize deleting it.
+Old-only paths left in the Project are recorded with their provenance in the
+marker's optional `retainedOperationalFiles`, so later audits still inspect them.
+Carry these entries forward until an approved migration or an explicit decision
+retires their inspection scope; older markers without the field remain valid.
 Unavailable history is reported as a coverage limit. When applying a working
 tree with uncommitted Standard changes, report their presence and explain that
 the recorded SHA excludes them, so a later audit may show differences. This does
@@ -161,7 +167,9 @@ lists; an Org Standard is not permission to rewrite every difference.
 ```text
 Use $project-scaffold to apply the current Org Standard to this project. First
 inspect only the root AGENTS.md, README.md, .gitignore, docs/README.md,
-docs/AGENTS.md, docs/00_templates/, and shallow directory structure. Show the
+docs/AGENTS.md, docs/00_templates/, shallow directory structure, and validated
+operational paths from the applied and selected standard configs and the marker's
+retainedOperationalFiles. Show the
 change plan and do not modify files until I approve it. Preserve existing local
 conventions unless I explicitly ask to change them.
 ```
@@ -183,7 +191,9 @@ several observed uses, not from one initial Bootstrap alone.
 Use $project-scaffold-audit to compare this project with its applied Org
 Standard. Do not change anything. Inspect only the root AGENTS.md, README.md,
 .gitignore, docs/README.md, docs/AGENTS.md, docs/00_templates/, and shallow
-directory structure. Classify every difference as Local, Promote, Remove-Migrate,
+directory structure, plus validated operational paths from the applied and
+current standard configs and the marker's retainedOperationalFiles.
+Classify every difference as Local, Promote, Remove-Migrate,
 or Needs-decision. For each item, report evidence, affected scope, benefit,
 compatibility risk, and the smallest proposed change.
 ```
@@ -206,6 +216,12 @@ commit, and diff; do not create a remote or push as a workaround. An access or
 network failure on a supported remote leaves the PR handoff incomplete and must
 be reported. For a non-Git-managed standard, make the minimal direct edit and
 re-read it to verify the result.
+
+For Git-managed standards, record the starting branch (normally `main`) and return
+to it after the PR or local handoff, including PR failures. Preserve the proposal
+branch for review. Do not force a switch over existing work; report any failure
+to restore the starting branch so a pending proposal is not mistaken for the
+current standard.
 
 Audit compares the project with the applied version, then checks the current
 standard before proposing changes. Already-incorporated improvements are reported

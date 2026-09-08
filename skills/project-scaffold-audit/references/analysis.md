@@ -19,6 +19,12 @@ For each target (project, Org Standard, or asset) collect only permitted metadat
 - additional exact project-relative paths in the standard's root
   `scaffold.config.json` `operationalFiles` array; for audit use the union from
   the applied and current versions, identifying which version lists each path
+- paths in the Project marker's optional `retainedOperationalFiles` array:
+  objects with `path`, `scaffoldSource`, and `scaffoldRef`. Require unique paths
+  validated by the same path rules below and nonempty source/ref strings. An
+  absent array means no retained paths. Include valid paths even if their old
+  source is unavailable, reporting historical evidence gaps; provenance does not
+  make that source the current standard.
 
 The optional config is a JSON object, for example
 `{"operationalFiles":["handbook/README.md",".github/workflows/review.yml"]}`.

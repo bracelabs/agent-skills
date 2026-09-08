@@ -107,6 +107,23 @@ Old-only entries are inspected for compatibility and reported as retained or
 proposed migrations; their disappearance from a config is not deletion approval.
 If scope recovery is incomplete, do not claim a complete migration review.
 
+Also include the marker's optional `retainedOperationalFiles` in Bootstrap,
+re-application, and audit, even if the old source is unavailable. It is an array
+of objects; each entry has
+`path` (an exact project-relative operational file), `scaffoldSource`, and
+`scaffoldRef` recording where that path was previously listed. Validate paths
+with the operational inspection contract above and require unique paths and
+nonempty source/ref strings. Missing listed files are findings, not permission to
+silently drop them. Provenance does not make an old source the current standard;
+report unavailable historical evidence as a coverage limit.
+
+When updating the marker, carry forward existing retained entries and add
+old-only paths left in the Project, preserving their provenance. A path covered
+by the selected standard's scope needs no retained entry. Otherwise remove an
+entry only through an approved migration or explicit decision to stop inspecting
+it; name that scope change in the application plan. Do not erase retained scope
+merely because the marker's main source/ref changes.
+
 Keep the organization's temporary-artifact and durable-documentation conventions
 in its operational rules. `tmp/` and `docs/` are Starter defaults, not required
 directory names for every Org Standard.
@@ -155,13 +172,21 @@ When `project-scaffold` applies an Org Standard to a project it writes
 {
   "scaffoldSource": "<path or git remote URL of the Org Standard>",
   "scaffoldRef": "<git commit SHA when git-managed, else ISO 8601 timestamp>",
-  "appliedAt": "<ISO 8601 timestamp>"
+  "appliedAt": "<ISO 8601 timestamp>",
+  "retainedOperationalFiles": [
+    {
+      "path": "handbook/AGENTS.md",
+      "scaffoldSource": "<previous Org Standard path or remote>",
+      "scaffoldRef": "<previous SHA or timestamp>"
+    }
+  ]
 }
 ```
 
 `project-scaffold-audit` reads this to pick its comparison baseline. If the file
 is absent, audit compares against the current `scaffold/` and says so in the
-report.
+report. `retainedOperationalFiles` is optional and defaults to an empty list for
+older markers; include it only when old-only operational paths are retained.
 
 Before applying a Git working tree, check for staged, unstaged, and untracked
 changes within the standard directory. If present, notify the user in the plan
