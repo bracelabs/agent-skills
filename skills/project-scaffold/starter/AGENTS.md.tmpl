@@ -23,6 +23,20 @@ Operating rules for agents working in this repository.
 - Check `docs/` for an existing spec before writing a new one.
 - Read `docs/AGENTS.md` before changing anything under `docs/`.
 
+## Boundaries
+
+- Stay inside the paths your task needs. Do not edit `.github/`, CI config, Git
+  hooks, or agent configuration as a side effect of another change.
+- Ask before anything that leaves this machine or is hard to undo: pushing,
+  opening or merging a PR, creating a repository, deploying, calling a paid or
+  external API, or touching infrastructure.
+- Ask before destructive Git operations — `reset --hard`, force-push, branch or
+  tag deletion, `clean -fd`.
+- Deleting or renaming files a task did not create needs explicit approval.
+- Do not read or copy anything under `.env*` or other credential stores into
+  chat, logs, commits, or `tmp/`.
+- <project-specific limits: paths, services, data that agents must not touch>
+
 ## When unsure
 
 - If a spec is ambiguous, ask. Do not guess, and do not lock an undecided

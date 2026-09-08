@@ -19,6 +19,12 @@ Use this only when maintaining a skills repository (this one, or a fork). It edi
 `skills/project-scaffold/starter/` in a git checkout — never an installed skill
 copy, whose edits are lost on the next `gh skill update`.
 
+**The skills repository is normally public, and this skill opens a PR against
+it.** An organization growing its own Org Standard does not need it: that is
+`project-scaffold-audit`'s job, and it keeps everything inside the organization's
+own standard repository. Run this only when the candidate is genuinely generic
+and the user intends to contribute it upstream.
+
 ## Preconditions
 
 - A working git checkout of the skills repository is the current directory, or the
@@ -55,6 +61,11 @@ generic.
 ## Verify and hand off
 
 - Run `gh skill publish --dry-run` from the repo root; it must pass.
+- Keep the starter's operating rules in files the default scope already reads —
+  `AGENTS.md.tmpl` and `docs/AGENTS.md`. The starter ships no
+  `scaffold.config.json`: widening the read scope is an organization's decision,
+  and a file that holds product content must never be listed. See
+  [operationalFiles](../project-scaffold/references/scope.md#operationalfiles).
 - Summarize: candidates applied, candidates rejected (with reason), files changed.
 - Commit on a branch and open a PR (`gh pr create`) describing source evidence
   (which audit, which project), scope, and compatibility risk.

@@ -6,15 +6,26 @@ code, not after.
 ## What each directory holds
 
 - `01_product/` — vision, MVP, personas, concept.
-- `02_requirements/` — what to achieve. Not how.
+- `02_requirements/` — what to achieve. Not how. Start from
+  `00_templates/requirements.md`.
 - `03_spec/` — how it is built: architecture, APIs, data, UI behaviour. Not why.
-- `04_decisions/` — decision records. Add one for a technology choice, a
-  dependency added or dropped, a data-model or API change, an architecture
-  change, or an operational-rule change.
-- `05_discussions/` — open questions only. When resolved, fold the outcome into
-  requirements/spec and add a decision record if one is warranted.
+  Start from `00_templates/spec.md`.
+- `04_decisions/` — decision records, from `00_templates/decision-record.md`,
+  numbered in order. Add one for a technology choice, a dependency added or
+  dropped, a data-model or API change, an architecture change, or an
+  operational-rule change.
+- `05_discussions/` — open questions only, from `00_templates/discussion.md`.
+  When resolved, fold the outcome into requirements/spec and add a decision
+  record if one is warranted.
+- `06_execution/` — delivery plans, QA, releases, and operational runbooks. How
+  the work ships, not what it is.
 - `00_templates/` — templates for new documents. Do not treat a template as
   authoritative content.
+
+Every operating rule for `docs/` belongs in this file. Each directory's own
+`README.md` says what the directory is for and nothing more — a rule placed
+there would sit outside the default read scope, where agents and audits will
+not find it.
 
 ## Workflow for a new capability
 

@@ -40,8 +40,10 @@ boundary.
 
 Install `project-scaffold` to create and apply an Org Standard, and
 `project-scaffold-audit` to learn from applied projects and improve that Org
-Standard. Both are required when you create an Org Standard by bootstrapping from
-existing projects.
+Standard. **Install both.** They share one definition of the read boundary and
+one marker contract, each held in the other skill's files: audit reads the scope
+contract from `project-scaffold`, and `project-scaffold` Bootstrap reads the
+analysis method from audit. Either one alone will stop rather than guess.
 
 ```sh
 gh skill install bracelabs/agent-skills project-scaffold
@@ -75,7 +77,9 @@ the agent to read application code or secrets.
 ```text
 Use $project-scaffold to bootstrap an Org Standard from the reference projects
 below. Inspect only each root AGENTS.md, README.md, .gitignore, docs/README.md,
-docs/AGENTS.md, docs/00_templates/, and shallow directory structure. Propose
+docs/AGENTS.md, docs/00_templates/, shallow directory structure, and validated
+operational paths from source-local configs and each source project's marker
+(applied standard scope and retainedOperationalFiles). Propose
 only technology-neutral conventions shared by the sources. Do not change
 ~/.config/agent-skills/project-scaffold/scaffold/ until I approve the proposal.
 
@@ -89,11 +93,52 @@ The Org Standard's content lives in `scaffold/` under `PROJECT_SCAFFOLD_HOME`
 to use another location. After the contents are approved, Git management, creating
 a remote, and pushing are separate choices that require explicit approval.
 
+Keep `AGENTS.md.tmpl`, `README.md.tmpl`, and `gitignore` as source filenames in
+the standard; rename only when applying to a project. Root `README.md` and
+`.gitignore` are standard-repository metadata, not project payload.
+
+The Starter ships no `scaffold.config.json`. Its operating rules live in
+`AGENTS.md.tmpl` and `docs/AGENTS.md`, which every run already reads. Widening
+the read scope is the organization's decision, so add the file at the standard
+root only when you have operational files outside the default scope:
+
+```json
+{"operationalFiles":["handbook/AGENTS.md",".github/PULL_REQUEST_TEMPLATE.md",".github/workflows/review.yml"]}
+```
+
+Bootstrap, apply, and audit inspect those exact project-relative paths in addition
+to their default scope. During Bootstrap, name extra source files explicitly.
+List only operational files: a path cannot be un-read once opened, so a file
+whose role is to hold requirements, specifications, or product overviews must not
+be listed. Lists never permit reading application code, secrets, or product
+specifications, or following unlisted links. This config is standard metadata and
+is never copied into a Project. See the
+[scope contract](../skills/project-scaffold/references/scope.md). `tmp/` and
+`docs/` are Starter defaults; preserve the organization's chosen
+temporary-artifact and durable-documentation boundaries.
+
+For previously scaffolded reference projects, Bootstrap follows
+`.project-scaffold.json` to recover the applied standard's inspection scope.
+Re-application inspects both the old and selected standard's scopes, including
+old-only files; removing a path from the list does not authorize deleting it.
+Such paths stay in the marker's `retainedOperationalFiles` with their provenance
+until an approved migration retires them. Unavailable history is reported as a
+coverage limit.
+
+The marker records the standard's Git remote when it has one — a machine-local
+path resolves on nobody else's machine, or silently resolves to their own local
+standard. When applying from a working tree with uncommitted Standard changes,
+that is reported and recorded as `scaffoldRefExact: false`, so a later audit
+treats the resulting differences as undecided rather than as project drift. It
+needs no separate approval and does not prevent application. Full marker schema:
+[project marker](../skills/project-scaffold/references/scope.md#project-marker).
+
 A first Org Standard — from the Built-in Starter or a Bootstrap — is thin: a
 starting hypothesis, not a finished standard. Apply it to one or more
-representative repositories, then run audits repeatedly over time. Promote only
-the conventions supported by repeated evidence; this prevents a single project's
-stack or domain rules from becoming organization-wide defaults.
+representative repositories, then run audits repeatedly over time. Audit may
+nominate a durable, technology-neutral convention found in one project; explain
+its reuse case and supporting evidence. Human review decides adoption. A project's
+stack or domain rules remain local.
 
 ## 3. Use the Org Standard in a project
 
@@ -125,16 +170,25 @@ lists; an Org Standard is not permission to rewrite every difference.
 ```text
 Use $project-scaffold to apply the current Org Standard to this project. First
 inspect only the root AGENTS.md, README.md, .gitignore, docs/README.md,
-docs/AGENTS.md, docs/00_templates/, and shallow directory structure. Show the
+docs/AGENTS.md, docs/00_templates/, shallow directory structure, and validated
+operational paths from the applied and selected standard configs and the marker's
+retainedOperationalFiles. Show the
 change plan and do not modify files until I approve it. Preserve existing local
 conventions unless I explicitly ask to change them.
 ```
 
 For either mode, the plan should identify every file and directory to create or
 change, the convention and source behind it, compatibility effects, and
-intentional local exceptions. Only after approval should the agent make minimal
-changes and record the Org Standard's source and reference in
-`.project-scaffold.json` at the project root.
+intentional local exceptions. Payload that runs on arrival — CI workflows, Git
+hooks, agent skills, scripts — is a separate category in the plan with its
+trigger and effect, approved separately from documentation. Only after approval
+should the agent make minimal changes and record the Org Standard's source and
+reference in `.project-scaffold.json` at the project root.
+
+`project-scaffold` creates and changes files; it does not tidy a project on its
+own. It removes or consolidates an existing file only to carry out an approved
+`Remove-Migrate` finding from an audit report that targeted the Project, and
+those removals are approved separately from the rest of the plan.
 
 ## 4. Feed durable improvements back into the Org Standard
 
@@ -147,23 +201,58 @@ several observed uses, not from one initial Bootstrap alone.
 Use $project-scaffold-audit to compare this project with its applied Org
 Standard. Do not change anything. Inspect only the root AGENTS.md, README.md,
 .gitignore, docs/README.md, docs/AGENTS.md, docs/00_templates/, and shallow
-directory structure. Classify every difference as Local, Promote, Remove-Migrate,
+directory structure, plus validated operational paths from the applied and
+current standard configs and the marker's retainedOperationalFiles.
+Classify every difference as Local, Promote, Remove-Migrate,
 or Needs-decision. For each item, report evidence, affected scope, benefit,
-compatibility risk, and the smallest proposed change.
+compatibility risk, the smallest proposed change, and its change target.
+Write the report to the project's untracked working-artifact directory with the
+standard header, and tell me the path.
 ```
 
 | Classification | Meaning |
 | --- | --- |
 | `Local` | Keep it in the project: it is justified by the stack, domain, or delivery model. |
-| `Promote` | A durable, technology-neutral convention that belongs in the Org Standard. |
+| `Promote` | A durable, technology-neutral convention plausibly reusable in other projects; a candidate for the Org Standard. |
 | `Remove-Migrate` | An outdated, duplicate, or conflicting convention that should be cleaned up. |
 | `Needs-decision` | There is not enough evidence to establish intent; identify what would settle it. |
 
-An audit is read-only by default. Approve individual `Promote` or
-`Remove-Migrate` items before changing the Org Standard. For a Git-managed Org
-Standard, make the minimal change on a branch and open a PR. For a
-non-Git-managed one, make the minimal direct edit and re-read it to verify the
-result.
+An audit is read-only by default. Each proposal identifies its change target:
+Project, Org Standard, or none. Hand Project-side cleanup to `project-scaffold`
+for its change plan and approval flow. Split proposals affecting both targets.
+Approve individual `Promote` or `Remove-Migrate` items targeting the Org Standard
+before changing it. For a Git-managed Org Standard, make the minimal change on a
+branch and commit it. With a configured GitHub remote, push and open a PR. Without
+a remote supported by the available PR tooling, finish locally with the branch,
+commit, and diff; do not create a remote or push as a workaround. An access or
+network failure on a supported remote leaves the PR handoff incomplete and must
+be reported. For a non-Git-managed standard, make the minimal direct edit and
+re-read it to verify the result.
+
+For Git-managed standards, record the starting branch (normally `main`) and return
+to it after the PR or local handoff, including PR failures. Preserve the proposal
+branch for review. Do not force a switch over existing work; report any failure
+to restore the starting branch so a pending proposal is not mistaken for the
+current standard.
+
+Audit compares the project with the applied version, then checks the current
+standard before proposing changes. Already-incorporated improvements are reported
+without a new Promote proposal.
+
+The report is the deliverable. It carries a fixed header — both baseline
+identities, whether the applied ref was exact, the inspected scope, coverage
+limits, and per-bucket counts — so that reports from many projects, collected
+over months, can be compared without re-reading each one. Audit writes it to the
+project's untracked working-artifact location (`tmp/project-scaffold-audit/` for
+the Starter convention) and changes nothing else; it stays untracked by default,
+since findings quote internal operating conventions. If the applied version is
+unavailable the header says `baseline: current-only`, meaning the origin of a
+difference cannot be established. Format:
+[report.md](../skills/project-scaffold-audit/references/report.md).
+
+This is what makes "every project submits an audit report each month" workable:
+the project side owes only the report, and the decision to change the standard
+stays with whoever owns it.
 
 ## 5. Improve the Built-in Starter only when appropriate
 
@@ -171,7 +260,10 @@ If a promoted convention benefits most new projects and is independent of a
 specific technology, organization, or domain, flag it in the audit report as a
 **Global Promote candidate**. Do not edit the Built-in Starter during the audit.
 
-Maintainers of the `agent-skills` repository can then request:
+`project-scaffold-maintain` opens a PR against the skills repository, which is
+normally public. It is not part of an organization's own loop — growing your Org
+Standard never needs it. Use it only to contribute a genuinely generic convention
+upstream. Maintainers of the `agent-skills` repository can then request:
 
 ```text
 Use $project-scaffold-maintain to integrate only the Global Promote candidates
@@ -186,7 +278,8 @@ then create a branch and PR. Do not merge or release.
   Standard later.
 - Bootstrap when you already have several mature projects that demonstrate the
   conventions you want to share.
-- Treat a convention seen in only one project as `Local` unless the user endorses
-  it for the organization.
+- In audit, single-project evidence can support a Promote candidate when reuse
+  is plausible; adoption still requires approval. Bootstrap retains its stricter
+  initial-selection rule: multiple sources or explicit user endorsement.
 - Keep every application and update flow as: **change plan → approval → minimal
   change**.

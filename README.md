@@ -7,8 +7,8 @@ Agent skills published for install with [`gh skill`](https://cli.github.com/manu
 | Skill | Purpose |
 | --- | --- |
 | `agmsg-team` | In an environment with [agmsg](https://github.com/fujibee/agmsg) and both the `claude` / `codex` CLIs installed, form a peer team with the session's selected model as Task Owner and split implementation, investigation, QA, review, and consultation across roles. Startable from Claude Code or Codex. |
-| `project-scaffold` | Create an Org Standard and apply it to projects. Supports starting from the Built-in Starter, bootstrapping from existing projects/docs, or using an existing Org Standard. |
-| `project-scaffold-audit` | Diff a project against its Org Standard and classify each difference as `Local` / `Promote` / `Remove-Migrate` / `Needs-decision`. After review, reflect approved changes into the Org Standard. |
+| `project-scaffold` | Create an Org Standard and apply it to projects. Supports starting from the Built-in Starter, bootstrapping from existing projects/docs, or using an existing Org Standard. Install together with `project-scaffold-audit`. |
+| `project-scaffold-audit` | Diff a project against its Org Standard and classify each difference as `Local` / `Promote` / `Remove-Migrate` / `Needs-decision`. After review, reflect approved changes into the Org Standard. Install together with `project-scaffold`. |
 | `project-scaffold-maintain` | For maintainers of this repo: review the improvements an audit marked `Global Promote` and open a PR folding them into the Built-in Starter. |
 
 ## Install
@@ -43,11 +43,27 @@ On first run, choose how to obtain the Org Standard:
    or Git remote).
 
 - For 1 and 2, `git init` and remote-repo creation are offered afterwards (skip if
-  not wanted).
+  not wanted). A remote is worth having: the marker each project carries records
+  it, so a teammate's audit resolves the same standard instead of their own local
+  copy.
 - Once ready, apply it to a project — always "change plan → approval → minimal
-  change".
+  change". Payload that runs on arrival (CI, hooks, skills) is approved
+  separately from documentation.
 
 ### project-scaffold-audit — grow the Org Standard
+
+What every run may read is fixed up front: root `AGENTS.md` / `README.md` /
+`.gitignore`, `docs/README.md`, `docs/AGENTS.md`, `docs/00_templates/`, and
+shallow directory names — never application code, secrets, or product
+specifications. An Org Standard can widen that with `operationalFiles` in
+`scaffold.config.json` (exact project-relative paths) for shared skills, PR
+templates, CI workflows, or handbook guides. Only operational files belong on
+that list; a path cannot be un-read once opened.
+See the [scope contract](skills/project-scaffold/references/scope.md).
+Bootstrap recovers the scope of a reference project's applied standard;
+re-application checks both old and new scopes and keeps retained old-only paths
+in the project's marker. Uncommitted Standard changes are reported when applying
+a working tree, but do not block it.
 
 A first Org Standard is thin; it fills out as you run audits repeatedly across
 several projects. Run an audit whenever a project has accumulated conventions
@@ -55,14 +71,25 @@ worth standardizing.
 
 Each audit:
 
-1. Diff the project against the Org Standard.
+1. Diff the project against its applied Org Standard, then check the current
+   standard so already-incorporated improvements are not proposed again.
 2. Classify each difference:
    - `Local` — project-specific; keep as-is.
-   - `Promote` — a candidate to fold into the Org Standard.
+   - `Promote` — a durable, technology-neutral candidate to fold into the Org Standard; one project's evidence can suffice for nomination when reuse is plausible.
    - `Remove-Migrate` — outdated, duplicate, or conflicting; a candidate to clean up.
    - `Needs-decision` — not enough evidence to decide.
-3. Review and adjust, then reflect only approved items into the Org Standard
-   (PR if Git-managed, otherwise a direct edit).
+3. Write a report with a fixed header — both baselines, the inspected scope,
+   coverage limits, and per-bucket counts — so reports from many projects stay
+   comparable. It goes to the project's untracked working-artifact location and
+   changes nothing else.
+4. Identify each proposal's change target. Reflect only approved Org Standard
+   changes there: a branch and commit for Git-managed standards, followed by a
+   PR when a supported remote is configured; otherwise a local diff report.
+   Non-Git standards receive a direct edit. Hand Project-side cleanup to
+   `project-scaffold` for its change plan and approval flow.
+
+After a Git handoff, return to the starting branch (normally `main`) and keep the
+proposal branch for review, so later audits do not use it as the current standard.
 
 Items generic enough for the Built-in Starter are only flagged `Global Promote`;
 folding them in is `project-scaffold-maintain` (maintainers only).

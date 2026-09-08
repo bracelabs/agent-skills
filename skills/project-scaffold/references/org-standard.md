@@ -4,6 +4,9 @@ The **Org Standard** is the standard a user or organization actually uses and
 grows over time. It is distinct from the Built-in Starter (a generic starting
 point bundled with the skill) and from any single Project.
 
+What these skills may read, and the `.project-scaffold.json` marker contract,
+are defined once in [scope.md](scope.md).
+
 ## Location
 
 - `$PROJECT_SCAFFOLD_HOME` if set, else `~/.config/agent-skills/project-scaffold/`.
@@ -21,6 +24,13 @@ pattern, a `.gitignore` pattern, a `docs/` structure, and any `docs/00_templates
 documents the org standardizes on. Keep it technology-neutral; stack-specific
 starters belong in clearly labelled subdirectories only when repeatedly needed.
 
+An optional root `scaffold.config.json` widens the read scope — see
+[operationalFiles](scope.md#operationalfiles).
+
+Keep the organization's temporary-artifact and durable-documentation conventions
+in its operational rules. `tmp/` and `docs/` are Starter defaults, not required
+directory names for every Org Standard.
+
 ## Rename map (applies to every scaffold source)
 
 Whether it comes from the Built-in Starter, a Bootstrap, or an existing
@@ -34,15 +44,31 @@ Org Standard, `project-scaffold` does not copy the source verbatim:
 | everything else | same relative path |
 
 **Not copied** — these are scaffold-repo metadata, never payload: `.git/`, the
-scaffold's own `README.md`, and the scaffold's own `.gitignore` (dotted). A
+root `scaffold.config.json`, the scaffold's root `README.md`, and its root
+`.gitignore` (dotted). Nested README.md and .gitignore files remain payload. A
 git-managed Org Standard keeps a dotted `.gitignore` for its own hygiene; the
 project's `.gitignore` is built from the dotless `gitignore` payload.
+
+Keep source filenames inside the Org Standard; rename only when applying to a
+Project or normalizing a comparison. Reject duplicate destination paths (for
+example, both `AGENTS.md` and `AGENTS.md.tmpl`) and unsupported `*.tmpl` names.
+If an older standard has already renamed its root README or ignore payload,
+ask which files are payload before proposing a migration; do not silently omit them.
+
+### Payload that runs
+
+Some payload does something the moment it lands: CI workflows, Git hooks, agent
+skills and slash commands, and scripts an operational rule tells an agent to
+run. Applying such a file is not the same as applying a README. List it as its
+own category in the change plan, with what triggers it and what it does, and get
+that approved separately from documentation changes. Never apply it silently as
+part of "everything else" in the rename map.
 
 ## Creating it — three patterns
 
 ### 1. Built-in Starter
 
-Copy `starter/` from the skill into `scaffold/`, applying the rename map above.
+Copy `starter/` from the skill into `scaffold/`, preserving source filenames.
 Adjust only what the user asks for. Do not carry over any product's domain rules,
 names, or services.
 
@@ -70,22 +96,6 @@ After the `scaffold/` content is approved, offer — do not assume:
    Ask for the name and visibility; default to `--private`. Never create a remote
    or push without explicit approval.
 
-"Not git-managed" is valid — in that case audit compares against the on-disk
-`scaffold/` directly.
-
-## Project marker
-
-When `project-scaffold` applies an Org Standard to a project it writes
-`.project-scaffold.json` at the project root:
-
-```json
-{
-  "scaffoldSource": "<path or git remote URL of the Org Standard>",
-  "scaffoldRef": "<git commit SHA when git-managed, else ISO 8601 timestamp>",
-  "appliedAt": "<ISO 8601 timestamp>"
-}
-```
-
-`project-scaffold-audit` reads this to pick its comparison baseline. If the file
-is absent, audit compares against the current `scaffold/` and says so in the
-report.
+A remote is also what lets a Project marker name the standard portably, so
+prefer it for any standard shared beyond one machine. "Not git-managed" is still
+valid — audit then compares against the on-disk `scaffold/` directly.

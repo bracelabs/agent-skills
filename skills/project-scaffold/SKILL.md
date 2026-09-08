@@ -32,8 +32,10 @@ technology decisions.
   `scaffold/` under that directory. It lives outside any skill install directory,
   so `gh skill install` / `gh skill update` never touch it.
 - **Project marker:** `.project-scaffold.json` at a project root records which
-  Org Standard and ref were applied. See
-  [org-standard.md](references/org-standard.md).
+  Org Standard and ref were applied. Schema and rules: [scope.md](references/scope.md#project-marker).
+
+What may be read, in this skill and the other two, is defined once in
+[scope.md](references/scope.md). Do not widen it from here.
 
 ## Choose an init pattern
 
@@ -64,12 +66,18 @@ a valid choice. Never create a remote or push without explicit approval.
 
 Validate the scaffold source and report any failure instead of applying:
 
-- every `*.tmpl` and `gitignore` resolves to a rename-map target; no target
-  collides with the scaffold's own `README.md` / `.gitignore`
-- the payload's `.gitignore` keeps an anchored `/tmp/` rule
-- internal Markdown links inside the scaffold resolve
-- if `.project-scaffold.json` will be read (re-apply / audit), its `scaffoldSource`
-  is reachable
+- payload paths resolve through the rename map without duplicate destinations;
+  exclude root scaffold metadata before mapping
+- `scaffold.config.json`, if present, satisfies
+  [the config rules](references/scope.md#operationalfiles)
+- ignore rules and operational instructions agree on the organization's chosen
+  temporary-artifact boundary (the Starter uses an anchored `/tmp/` rule)
+- internal Markdown links resolve in the mapped project layout
+- on re-application, the applied version and its scope resolve as described in
+  [scope.md](references/scope.md#resolving-a-standard-version); report
+  unavailable history as a coverage limit, not as a failure of the new source
+- the standard's working tree is clean, or the plan will carry the dirty-standard
+  notice and record `scaffoldRefExact: false`
 
 ## Apply an Org Standard to a project
 
@@ -77,25 +85,41 @@ Do not modify a project until the user approves a concrete plan.
 
 1. Determine mode: **new** (empty or newly requested target) or **existing**.
    Preserve current user work either way.
-2. Inspect only permitted metadata of the target: shallow layout, root AGENTS.md,
-   root README.md, root .gitignore, listed operational files, docs/README.md,
-   docs/AGENTS.md, and shallow docs directory names. Do not read application
-   source, dependency trees, generated output, secrets, or product specifications.
+2. Inspect the target within [the resolved scope](references/scope.md#assembling-the-scope-for-a-run).
+   On re-application that is the union of the recovered applied scope and the
+   selected standard's scope, including old-only paths.
 3. Select only what the user requested or an approved `project-scaffold-audit`
    report identifies. An existing Org Standard is not permission to rewrite every
    difference.
-4. Present the plan: each file/dir to create or change, the convention and its
-   source, compatibility impact, intentional local exceptions left untouched,
-   whether `/tmp/` is added to `.gitignore`, and the matching AGENTS.md
-   temporary-work rule.
+4. Present the plan: each file/dir to create, change, or remove; the convention
+   and its source; compatibility impact; intentional local exceptions left
+   untouched; any ignore-rule changes; and the matching operational rule
+   separating temporary artifacts from durable documentation. List
+   [payload that runs](references/org-standard.md#payload-that-runs) as its own
+   category, with its trigger and effect, for separate approval.
 5. On approval, make only the listed changes. If the plan changes materially,
    re-present and ask again.
-6. Write or update `.project-scaffold.json` at the project root: `scaffoldSource`,
-   `scaffoldRef` (git commit SHA of the Org Standard when git-managed, else an ISO
-   8601 timestamp), `appliedAt`.
+6. Write or update `.project-scaffold.json` per
+   [the marker contract](references/scope.md#project-marker): record the standard's
+   Git remote as `scaffoldSource` when it has one, set `scaffoldRefExact`, and
+   carry `retainedOperationalFiles` forward. Name any decision to retire retained
+   inspection scope in the approved plan.
 7. Verify the changed operational files. Report target location, applied
    conventions, and remaining exceptions. If the target is not a git worktree,
    report verification without claiming git status.
+
+### Removing project files
+
+Preserving the user's work is the default, so this skill creates and changes
+files; it does not tidy a project on its own initiative. Removal or consolidation
+of an existing project file is permitted only when it implements a
+`Remove-Migrate` finding that a `project-scaffold-audit` report targeted at the
+Project and the user has approved.
+
+Even then: quote the finding, show the current content of each affected file in
+the plan, prefer merging content into its replacement over deleting it, and get
+approval for the removals separately from the rest of the plan. Never remove a
+file merely because the Org Standard has no counterpart for it.
 
 ## Built-in Starter shape
 
@@ -119,28 +143,25 @@ docs/
 └── 06_execution/    # delivery plans, QA, releases, operations
 ```
 
+`docs/AGENTS.md` carries the rules for using those directories, which keeps them
+in the default read scope without listing the product-bearing files inside them.
+
 ## Temporary working files
 
-Use `tmp/<work-item>/` at the project root for artifacts that must not be
-committed: scratch notes, one-off exports, rendered previews, logs, agent handoff
-files. `docs/` is the versioned source of truth; never use `docs/tmp/`.
-
-- Every Org Standard's root `.gitignore` keeps an anchored `/tmp/` rule,
-  preserving existing rules.
-- The root AGENTS.md documents the `tmp/<work-item>/` convention and its `docs/`
-  boundary. For an existing project, include that AGENTS.md change in the approved
-  plan.
-- Create `tmp/<work-item>/` only when needed; it is untracked, so add no
-  placeholders.
-- Do not use a system `/tmp/...` path for artifacts shared between agents in one
-  repo.
+Follow the target project's existing rules for working artifacts during the run.
+The Starter defaults to `tmp/<work-item>/`, an anchored `/tmp/` ignore rule, and
+`docs/` for durable documentation. It excludes `docs/tmp/` and system `/tmp/`
+for shared repo artifacts. An Org Standard may choose other locations and place
+its instructions in other operational files. Preserve those choices; include any
+boundary changes in the approved plan. Create untracked working directories only
+when needed, without placeholders.
 
 ## Finish
 
 - Verify the created or changed tree and read the key operational files.
-- When `.gitignore` is created or changed, verify the anchored `/tmp/` rule.
-- When AGENTS.md is created or changed, verify it documents the `tmp/<work-item>/`
-  convention and its `docs/` boundary.
+- Verify changed ignore rules and operational instructions preserve the chosen
+  temporary-artifact / durable-documentation boundary. For the unchanged Starter
+  convention, check `tmp/<work-item>/`, anchored `/tmp/`, and the `docs/` boundary.
 - Report target location, main files, and intentional omissions.
 
 ## Do not edit the Built-in Starter during a run
