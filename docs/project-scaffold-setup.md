@@ -95,14 +95,10 @@ Keep `AGENTS.md.tmpl`, `README.md.tmpl`, and `gitignore` as source filenames in
 the standard; rename only when applying to a project. Root `README.md` and
 `.gitignore` are standard-repository metadata, not project payload.
 
-The Starter includes `scaffold.config.json` listing the six lifecycle-directory
-README files under `docs/`. This config stays in the Org Standard; it is not
-copied into the Project. Existing Org Standards need an approved merge of the
-relevant entries, preserving their custom paths; updating the skill alone does
-not extend their inspection scope.
-
-For custom operational files, add entries to `scaffold.config.json` at the
-standard root (create it if absent; preserve existing entries):
+The Starter ships no `scaffold.config.json`. Its operating rules live in
+`AGENTS.md.tmpl` and `docs/AGENTS.md`, which every run already reads. Widening
+the read scope is the organization's decision, so add the file at the standard
+root only when you have operational files outside the default scope:
 
 ```json
 {"operationalFiles":["handbook/AGENTS.md",".github/PULL_REQUEST_TEMPLATE.md",".github/workflows/review.yml"]}
@@ -110,25 +106,30 @@ standard root (create it if absent; preserve existing entries):
 
 Bootstrap, apply, and audit inspect those exact project-relative paths in addition
 to their default scope. During Bootstrap, name extra source files explicitly.
-Lists do not permit reading application code, secrets, or product specifications,
-or following unlisted links. See the
-[scope contract](../skills/project-scaffold/references/org-standard.md#operational-inspection-scope).
-The example prompts include these validated operational paths. `tmp/` and
-`docs/` are Starter defaults; preserve the
-organization's chosen temporary-artifact and durable-documentation boundaries.
+List only operational files: a path cannot be un-read once opened, so a file
+whose role is to hold requirements, specifications, or product overviews must not
+be listed. Lists never permit reading application code, secrets, or product
+specifications, or following unlisted links. This config is standard metadata and
+is never copied into a Project. See the
+[scope contract](../skills/project-scaffold/references/scope.md). `tmp/` and
+`docs/` are Starter defaults; preserve the organization's chosen
+temporary-artifact and durable-documentation boundaries.
 
 For previously scaffolded reference projects, Bootstrap follows
 `.project-scaffold.json` to recover the applied standard's inspection scope.
 Re-application inspects both the old and selected standard's scopes, including
 old-only files; removing a path from the list does not authorize deleting it.
-Old-only paths left in the Project are recorded with their provenance in the
-marker's optional `retainedOperationalFiles`, so later audits still inspect them.
-Carry these entries forward until an approved migration or an explicit decision
-retires their inspection scope; older markers without the field remain valid.
-Unavailable history is reported as a coverage limit. When applying a working
-tree with uncommitted Standard changes, report their presence and explain that
-the recorded SHA excludes them, so a later audit may show differences. This does
-not require a separate approval or prevent application.
+Such paths stay in the marker's `retainedOperationalFiles` with their provenance
+until an approved migration retires them. Unavailable history is reported as a
+coverage limit.
+
+The marker records the standard's Git remote when it has one — a machine-local
+path resolves on nobody else's machine, or silently resolves to their own local
+standard. When applying from a working tree with uncommitted Standard changes,
+that is reported and recorded as `scaffoldRefExact: false`, so a later audit
+treats the resulting differences as undecided rather than as project drift. It
+needs no separate approval and does not prevent application. Full marker schema:
+[project marker](../skills/project-scaffold/references/scope.md#project-marker).
 
 A first Org Standard — from the Built-in Starter or a Bootstrap — is thin: a
 starting hypothesis, not a finished standard. Apply it to one or more
@@ -176,9 +177,16 @@ conventions unless I explicitly ask to change them.
 
 For either mode, the plan should identify every file and directory to create or
 change, the convention and source behind it, compatibility effects, and
-intentional local exceptions. Only after approval should the agent make minimal
-changes and record the Org Standard's source and reference in
-`.project-scaffold.json` at the project root.
+intentional local exceptions. Payload that runs on arrival — CI workflows, Git
+hooks, agent skills, scripts — is a separate category in the plan with its
+trigger and effect, approved separately from documentation. Only after approval
+should the agent make minimal changes and record the Org Standard's source and
+reference in `.project-scaffold.json` at the project root.
+
+`project-scaffold` creates and changes files; it does not tidy a project on its
+own. It removes or consolidates an existing file only to carry out an approved
+`Remove-Migrate` finding from an audit report that targeted the Project, and
+those removals are approved separately from the rest of the plan.
 
 ## 4. Feed durable improvements back into the Org Standard
 
@@ -195,7 +203,9 @@ directory structure, plus validated operational paths from the applied and
 current standard configs and the marker's retainedOperationalFiles.
 Classify every difference as Local, Promote, Remove-Migrate,
 or Needs-decision. For each item, report evidence, affected scope, benefit,
-compatibility risk, and the smallest proposed change.
+compatibility risk, the smallest proposed change, and its change target.
+Write the report to the project's untracked working-artifact directory with the
+standard header, and tell me the path.
 ```
 
 | Classification | Meaning |
@@ -225,9 +235,22 @@ current standard.
 
 Audit compares the project with the applied version, then checks the current
 standard before proposing changes. Already-incorporated improvements are reported
-without a new Promote proposal. The report identifies both baselines and any
-inspection limits; if the applied version is unavailable, it states that it used
-the current version only.
+without a new Promote proposal.
+
+The report is the deliverable. It carries a fixed header — both baseline
+identities, whether the applied ref was exact, the inspected scope, coverage
+limits, and per-bucket counts — so that reports from many projects, collected
+over months, can be compared without re-reading each one. Audit writes it to the
+project's untracked working-artifact location (`tmp/project-scaffold-audit/` for
+the Starter convention) and changes nothing else; it stays untracked by default,
+since findings quote internal operating conventions. If the applied version is
+unavailable the header says `baseline: current-only`, meaning the origin of a
+difference cannot be established. Format:
+[report.md](../skills/project-scaffold-audit/references/report.md).
+
+This is what makes "every project submits an audit report each month" workable:
+the project side owes only the report, and the decision to change the standard
+stays with whoever owns it.
 
 ## 5. Improve the Built-in Starter only when appropriate
 
@@ -235,7 +258,10 @@ If a promoted convention benefits most new projects and is independent of a
 specific technology, organization, or domain, flag it in the audit report as a
 **Global Promote candidate**. Do not edit the Built-in Starter during the audit.
 
-Maintainers of the `agent-skills` repository can then request:
+`project-scaffold-maintain` opens a PR against the skills repository, which is
+normally public. It is not part of an organization's own loop — growing your Org
+Standard never needs it. Use it only to contribute a genuinely generic convention
+upstream. Maintainers of the `agent-skills` repository can then request:
 
 ```text
 Use $project-scaffold-maintain to integrate only the Global Promote candidates

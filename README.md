@@ -43,26 +43,27 @@ On first run, choose how to obtain the Org Standard:
    or Git remote).
 
 - For 1 and 2, `git init` and remote-repo creation are offered afterwards (skip if
-  not wanted).
+  not wanted). A remote is worth having: the marker each project carries records
+  it, so a teammate's audit resolves the same standard instead of their own local
+  copy.
 - Once ready, apply it to a project — always "change plan → approval → minimal
-  change".
+  change". Payload that runs on arrival (CI, hooks, skills) is approved
+  separately from documentation.
 
 ### project-scaffold-audit — grow the Org Standard
 
-Org Standards can list additional operational files in `scaffold.config.json`
-(`operationalFiles`: exact project-relative file paths), such as shared skills,
-PR templates, CI workflows, or handbook guides. Bootstrap, apply, and audit use
-that scope without reading application code or following unlisted links. `tmp/`
-and `docs/` are Starter defaults; organizations may choose other boundaries.
-See the [scope contract](skills/project-scaffold/references/org-standard.md#operational-inspection-scope).
-The Starter's config lists its six lifecycle-directory README files under `docs/`.
-For existing Org Standards, merge the relevant entries into their config after
-review; a skill update does not change an organization's inspection scope.
-Bootstrap recovers that scope from a reference project's applied standard;
-re-application checks both old and new scopes. Uncommitted Standard changes are
-reported when applying a working tree, but do not block it.
-Retained old-only paths and their provenance stay in the project's marker for
-later audits; retiring that inspection scope is an explicit application decision.
+What every run may read is fixed up front: root `AGENTS.md` / `README.md` /
+`.gitignore`, `docs/README.md`, `docs/AGENTS.md`, `docs/00_templates/`, and
+shallow directory names — never application code, secrets, or product
+specifications. An Org Standard can widen that with `operationalFiles` in
+`scaffold.config.json` (exact project-relative paths) for shared skills, PR
+templates, CI workflows, or handbook guides. Only operational files belong on
+that list; a path cannot be un-read once opened.
+See the [scope contract](skills/project-scaffold/references/scope.md).
+Bootstrap recovers the scope of a reference project's applied standard;
+re-application checks both old and new scopes and keeps retained old-only paths
+in the project's marker. Uncommitted Standard changes are reported when applying
+a working tree, but do not block it.
 
 A first Org Standard is thin; it fills out as you run audits repeatedly across
 several projects. Run an audit whenever a project has accumulated conventions
@@ -77,7 +78,11 @@ Each audit:
    - `Promote` — a durable, technology-neutral candidate to fold into the Org Standard; one project's evidence can suffice for nomination when reuse is plausible.
    - `Remove-Migrate` — outdated, duplicate, or conflicting; a candidate to clean up.
    - `Needs-decision` — not enough evidence to decide.
-3. Identify each proposal's change target. Reflect only approved Org Standard
+3. Write a report with a fixed header — both baselines, the inspected scope,
+   coverage limits, and per-bucket counts — so reports from many projects stay
+   comparable. It goes to the project's untracked working-artifact location and
+   changes nothing else.
+4. Identify each proposal's change target. Reflect only approved Org Standard
    changes there: a branch and commit for Git-managed standards, followed by a
    PR when a supported remote is configured; otherwise a local diff report.
    Non-Git standards receive a direct edit. Hand Project-side cleanup to

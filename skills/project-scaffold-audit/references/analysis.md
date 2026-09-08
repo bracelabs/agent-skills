@@ -5,9 +5,17 @@ Shared method used by `project-scaffold-audit` (Project → Org Standard) and by
 
 ## 1. Scan
 
-For each target (project, Org Standard, or asset) collect only permitted metadata:
+Read only what
+[scope.md](../../project-scaffold/references/scope.md) permits, and assemble the
+run's path list from
+[the scope table](../../project-scaffold/references/scope.md#assembling-the-scope-for-a-run)
+there. That covers the default scope, `operationalFiles` configs, the marker's
+`retainedOperationalFiles`, validation, and how to resolve an applied version.
+Report uninspected areas as coverage limits.
 
-- shallow directory layout (depth ~2), noting intentional empty dirs and placeholders
+From each in-scope file, collect what bears on conventions:
+
+- shallow directory layout, noting intentional empty dirs and placeholders
 - root `AGENTS.md` / `agents.md` — every operating rule, including the chosen
   temporary-artifact / durable-documentation boundary
 - root `README.md` — structural claims only
@@ -16,27 +24,6 @@ For each target (project, Org Standard, or asset) collect only permitted metadat
   (`01_product` … `06_execution`) if used
 - `docs/AGENTS.md` — how docs/ is used: directory roles, workflow, checklist
 - reusable documents under `docs/00_templates/`
-- additional exact project-relative paths in the standard's root
-  `scaffold.config.json` `operationalFiles` array; for audit use the union from
-  the applied and current versions, identifying which version lists each path
-- paths in the Project marker's optional `retainedOperationalFiles` array:
-  objects with `path`, `scaffoldSource`, and `scaffoldRef`. Require unique paths
-  validated by the same path rules below and nonempty source/ref strings. An
-  absent array means no retained paths. Include valid paths even if their old
-  source is unavailable, reporting historical evidence gaps; provenance does not
-  make that source the current standard.
-
-The optional config is a JSON object, for example
-`{"operationalFiles":["handbook/README.md",".github/workflows/review.yml"]}`.
-Require unique, nonempty relative file paths; reject absolute paths, `..`
-segments, globs, directory entries, and symlinks escaping the target root.
-Report invalid entries before reading them. Missing listed files are findings.
-The list cannot override the exclusions below or authorize execution. Do not
-follow links to unlisted files. No config means the default scope above. Bootstrap
-also accepts exact user-named operational files and includes approved resulting
-paths in the new standard's config. Report uninspected areas as coverage limits.
-For Bootstrap of an applied project, include the scope recovered from its marker
-by `project-scaffold`'s Bootstrap procedure; a project-local config is not required.
 
 For a standard or Starter, normalize payload paths before scanning/comparing:
 root `AGENTS.md.tmpl` → `AGENTS.md`, root `README.md.tmpl` → `README.md`, root
@@ -46,9 +33,6 @@ nested README.md and .gitignore files are payload. Reject duplicate destinations
 and unsupported `*.tmpl` names. Never compare the standard's own README or ignore
 file as project content. If an older standard has already renamed those payloads,
 resolve their intent with the user rather than silently omitting them.
-
-Never read application source, dependency trees, lockfiles, generated output, data
-files, secrets, or product specifications.
 
 ## 2. Diff
 
@@ -71,7 +55,9 @@ For audit, use Project vs applied version to detect divergence, then check both
 against the current standard. Also report current-standard changes that have not
 reached the project, without treating them as mandatory migrations. An applied
 ref records the source of a selective application, not proof every rule was
-adopted. If intent is unknown, use Needs-decision.
+adopted. When the marker says `scaffoldRefExact: false`, the applied baseline
+does not name what was applied — prefer Needs-decision over asserting drift. If
+intent is unknown, use Needs-decision.
 
 When a project improvement is already in the current standard, record it as
 already incorporated with no change proposed, outside the actionable findings;
@@ -90,20 +76,15 @@ the conflict before recommending a change. Differences alone are not violations.
 For audit, a convention observed in one project may be a Promote candidate without
 prior endorsement. Explain its reuse case and record the extent of supporting
 evidence; observation count informs adoption, not eligibility for nomination.
-Keep project-specific domain rules Local. Candidate classification is not approval.
+Keep project-specific domain rules Local — a single-project domain rule is never
+a common convention. Candidate classification is not approval.
 
 For Bootstrap, "Promote" means "include in the initial Org Standard"; a convention
 seen in only one source stays out unless the user endorses it.
 
 ## 4. Report
 
-One finding per row: bucket, evidence (files), affected scope, benefit,
-compatibility risk, smallest change, and change target (Project, Org Standard, or
-none). Split proposals that affect both into separately approvable changes.
-Project cleanup goes to `project-scaffold`; audit may reflect only changes whose
-target is the Org Standard. Flag any Promote item generic enough for the
-Built-in Starter as a **Global Promote candidate**.
-
-Include applied and current baseline identities, inspection scope, missing listed
-files, coverage limits, and already-incorporated items. If only the current
-baseline is available, state that the origin of a difference cannot be established.
+Follow [report.md](report.md): fixed header, one row per finding with its change
+target, already-incorporated items listed separately, and Global Promote
+candidates flagged. Bootstrap has no marker to record, but reports the same
+scope, coverage limits, and per-bucket counts.

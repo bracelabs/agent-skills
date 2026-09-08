@@ -4,6 +4,9 @@ The **Org Standard** is the standard a user or organization actually uses and
 grows over time. It is distinct from the Built-in Starter (a generic starting
 point bundled with the skill) and from any single Project.
 
+What these skills may read, and the `.project-scaffold.json` marker contract,
+are defined once in [scope.md](scope.md).
+
 ## Location
 
 - `$PROJECT_SCAFFOLD_HOME` if set, else `~/.config/agent-skills/project-scaffold/`.
@@ -20,6 +23,13 @@ This path is outside every skill install directory, so `gh skill install` and
 pattern, a `.gitignore` pattern, a `docs/` structure, and any `docs/00_templates/`
 documents the org standardizes on. Keep it technology-neutral; stack-specific
 starters belong in clearly labelled subdirectories only when repeatedly needed.
+
+An optional root `scaffold.config.json` widens the read scope — see
+[operationalFiles](scope.md#operationalfiles).
+
+Keep the organization's temporary-artifact and durable-documentation conventions
+in its operational rules. `tmp/` and `docs/` are Starter defaults, not required
+directory names for every Org Standard.
 
 ## Rename map (applies to every scaffold source)
 
@@ -45,88 +55,14 @@ example, both `AGENTS.md` and `AGENTS.md.tmpl`) and unsupported `*.tmpl` names.
 If an older standard has already renamed its root README or ignore payload,
 ask which files are payload before proposing a migration; do not silently omit them.
 
-## Operational inspection scope
+### Payload that runs
 
-An optional root `scaffold.config.json` declares additional operational files,
-using exact project-relative paths (not source template names):
-
-```json
-{
-  "operationalFiles": [
-    "handbook/AGENTS.md",
-    "handbook/README.md",
-    ".github/PULL_REQUEST_TEMPLATE.md",
-    ".github/workflows/review.yml",
-    ".agents/skills/review/SKILL.md"
-  ]
-}
-```
-
-Bootstrap, apply, and audit add these paths to their default inspection scope.
-No config means the documented default scope, not unrestricted scanning. During
-Bootstrap the user may also name exact operational files; include the approved
-resulting paths in the synthesized config. Record missing listed files as missing.
-Unlisted files remain uninspected, including files linked from a listed file.
-
-Require a JSON object with an `operationalFiles` array of unique, nonempty relative
-file paths. Reject absolute paths, `..` segments, globs, directory entries, and
-symlinks escaping the target root. Listing a path never authorizes reading secrets,
-application code, dependencies, generated output, or product specifications, or
-executing workflows/skills. Report invalid entries before scanning them. Listed
-files may be inspected even when there is no matching payload in the standard.
-This is a read scope, not permission to apply every listed file.
-
-The Built-in Starter includes a config listing the six lifecycle-directory
-README.md files under `docs/`. Copy this config when creating an Org Standard;
-it remains standard metadata and is not applied to the Project. Skill updates
-do not update an existing Org Standard: propose merging the relevant entries
-into its config, preserving custom entries and using its actual directory names.
-Read listed README files as operational guides only; listing them does not
-permit reading product specifications added to those files.
-
-### Recovering the applied scope
-
-For a previously scaffolded project, read `.project-scaffold.json` and resolve
-`scaffoldSource` before scanning additional files. A local source points to the
-standard directory; for a remote, use a matching clone or fetch/clone into the
-Org Standard home's `.cache/` directory (use the default home if unset).
-Locate the payload at the repository root or its `scaffold/` subdirectory; if
-ambiguous, ask which is intended. Read its `scaffold.config.json` at
-`scaffoldRef` with `git show <SHA>:<payload-prefix>scaffold.config.json` when
-resolvable. A config absent at a successfully resolved version means default
-scope, not a failed lookup. For a timestamp or unavailable version, use the
-source's current config and report the fallback. If the source is unreachable,
-report the coverage gap and use only known scope; do not infer missing paths.
-
-For Bootstrap, combine this recovered scope with any source-local config and
-exact user-named files. Read the files in the reference project, not the standard's
-payload, as evidence for Bootstrap. For re-application, combine the recovered
-scope with the selected standard's config, even when changing standard sources.
-Validate every list using the contract above and retain each path's provenance.
-Old-only entries are inspected for compatibility and reported as retained or
-proposed migrations; their disappearance from a config is not deletion approval.
-If scope recovery is incomplete, do not claim a complete migration review.
-
-Also include the marker's optional `retainedOperationalFiles` in Bootstrap,
-re-application, and audit, even if the old source is unavailable. It is an array
-of objects; each entry has
-`path` (an exact project-relative operational file), `scaffoldSource`, and
-`scaffoldRef` recording where that path was previously listed. Validate paths
-with the operational inspection contract above and require unique paths and
-nonempty source/ref strings. Missing listed files are findings, not permission to
-silently drop them. Provenance does not make an old source the current standard;
-report unavailable historical evidence as a coverage limit.
-
-When updating the marker, carry forward existing retained entries and add
-old-only paths left in the Project, preserving their provenance. A path covered
-by the selected standard's scope needs no retained entry. Otherwise remove an
-entry only through an approved migration or explicit decision to stop inspecting
-it; name that scope change in the application plan. Do not erase retained scope
-merely because the marker's main source/ref changes.
-
-Keep the organization's temporary-artifact and durable-documentation conventions
-in its operational rules. `tmp/` and `docs/` are Starter defaults, not required
-directory names for every Org Standard.
+Some payload does something the moment it lands: CI workflows, Git hooks, agent
+skills and slash commands, and scripts an operational rule tells an agent to
+run. Applying such a file is not the same as applying a README. List it as its
+own category in the change plan, with what triggers it and what it does, and get
+that approved separately from documentation changes. Never apply it silently as
+part of "everything else" in the rename map.
 
 ## Creating it — three patterns
 
@@ -160,39 +96,6 @@ After the `scaffold/` content is approved, offer — do not assume:
    Ask for the name and visibility; default to `--private`. Never create a remote
    or push without explicit approval.
 
-"Not git-managed" is valid — in that case audit compares against the on-disk
-`scaffold/` directly.
-
-## Project marker
-
-When `project-scaffold` applies an Org Standard to a project it writes
-`.project-scaffold.json` at the project root:
-
-```json
-{
-  "scaffoldSource": "<path or git remote URL of the Org Standard>",
-  "scaffoldRef": "<git commit SHA when git-managed, else ISO 8601 timestamp>",
-  "appliedAt": "<ISO 8601 timestamp>",
-  "retainedOperationalFiles": [
-    {
-      "path": "handbook/AGENTS.md",
-      "scaffoldSource": "<previous Org Standard path or remote>",
-      "scaffoldRef": "<previous SHA or timestamp>"
-    }
-  ]
-}
-```
-
-`project-scaffold-audit` reads this to pick its comparison baseline. If the file
-is absent, audit compares against the current `scaffold/` and says so in the
-report. `retainedOperationalFiles` is optional and defaults to an empty list for
-older markers; include it only when old-only operational paths are retained.
-
-Before applying a Git working tree, check for staged, unstaged, and untracked
-changes within the standard directory. If present, notify the user in the plan
-and final report that the Standard has uncommitted changes and the recorded HEAD
-SHA does not include them; a later audit may report them as differences. Continue
-with the usual approved application plan: dirtiness alone is not a blocker or
-an extra approval step. Do not commit or discard the Standard's changes. If there
-is no commit yet, record a timestamp instead of inventing a SHA. When applying an
-explicit committed ref, read that ref's contents, not unrelated working-tree edits.
+A remote is also what lets a Project marker name the standard portably, so
+prefer it for any standard shared beyond one machine. "Not git-managed" is still
+valid — audit then compares against the on-disk `scaffold/` directly.

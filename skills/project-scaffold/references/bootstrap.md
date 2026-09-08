@@ -19,28 +19,20 @@ reproducible.
 
 ## Inspection boundary
 
-For every scanned project inspect only:
+Read only what [scope.md](scope.md) permits. For Bootstrap that is the default
+scope, plus a root package or workspace manifest to detect an intentional
+monorepo shape, plus exact operational files the user names, plus any
+`operationalFiles` config in the sources.
 
-- root and shallow directory layout (depth ~2)
-- root `AGENTS.md` / `agents.md`
-- root `README.md`
-- root `.gitignore`
-- a root package or workspace manifest only to detect an intentional monorepo shape
-- `docs/README.md`, `docs/AGENTS.md`, and shallow documentation-directory names
-- reusable documents under `docs/00_templates/`
-- exact operational files named by the user or the source's
-  `scaffold.config.json`, validated using the
-  [operational inspection contract](org-standard.md#operational-inspection-scope)
+For a source project carrying `.project-scaffold.json`, also recover the applied
+standard's scope and its `retainedOperationalFiles` using
+[the resolution table](scope.md#resolving-a-standard-version). That config
+normally lives in the standard, not in the project. Record each recovered path's
+source, ref, and any fallback in the Bootstrap report. The comparison baseline
+remains the Built-in Starter.
 
-For a source project with `.project-scaffold.json`, also recover the applied
-standard's inspection scope using
-[Recovering the applied scope](org-standard.md#recovering-the-applied-scope).
-The config normally lives in that standard, not in the project. Include recovered
-paths in the scan and record their source/ref and any fallback in the Bootstrap
-report. The comparison baseline remains the Built-in Starter.
-
-Do not read application source, deep file trees, dependencies, lockfiles,
-generated artifacts, data files, secrets, or detailed product specifications.
+Read the files in the reference project itself as evidence — not the payload of
+whatever standard it was applied from.
 
 ## Method
 
@@ -51,10 +43,10 @@ treat conventions seen across multiple sources, or explicitly endorsed by the
 user, as the Org Standard baseline; keep single-source domain rules out unless asked.
 
 Present the synthesized Org Standard — structure, operational rules, ignore
-payload, templates, and `scaffold.config.json` inspection scope — for approval
-before writing `scaffold/`. Preserve template source names according to the
-rename map; do not pre-render them as project files. Then follow the git
-follow-up in [org-standard.md](org-standard.md).
+payload, templates, and any `scaffold.config.json` scope — for approval before
+writing `scaffold/`. Preserve template source names according to the rename map;
+do not pre-render them as project files. Then follow the git follow-up in
+[org-standard.md](org-standard.md).
 
 Requires the `project-scaffold-audit` skill installed. If it is absent, tell the
 user and offer pattern 1 (Built-in Starter) instead.

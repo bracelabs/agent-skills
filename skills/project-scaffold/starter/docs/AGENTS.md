@@ -13,8 +13,14 @@ code, not after.
   change, or an operational-rule change.
 - `05_discussions/` — open questions only. When resolved, fold the outcome into
   requirements/spec and add a decision record if one is warranted.
+- `06_execution/` — delivery plans, QA, releases, and operational runbooks. How
+  the work ships, not what it is.
 - `00_templates/` — templates for new documents. Do not treat a template as
   authoritative content.
+
+Each directory's own `README.md` is an index of its contents. This file is the
+rule set; keep operating rules here rather than spreading them across those
+indexes.
 
 ## Workflow for a new capability
 
