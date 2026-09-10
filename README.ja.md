@@ -6,7 +6,7 @@
 
 | スキル | 目的 |
 | --- | --- |
-| `agmsg-team` | [agmsg](https://github.com/fujibee/agmsg)と`claude` / `codex`両方のCLIが入った環境で、セッションで選択したモデルをTask Ownerにしてピアチームを組み、実装・調査・QA・レビュー・相談を役割分担して進める。Claude Code / Codexのどちらからでも起動できる。 |
+| `dev-team` | セッションで選択したモデルをTask Ownerにして、実装・調査・QA・レビュー・相談といった限定タスクを同一CLIのサブエージェントに振り分けるタスクスコープのチーム。他CLIのモデルを借りたいときだけ[agmsg](https://github.com/fujibee/agmsg)のクロスCLIピアを使う。Claude Code / Codexのどちらからでも起動できる。 |
 | `project-scaffold` | Org Standardを作成し、各プロジェクトに適用する。Built-in Starterを使う方法、既存プロジェクトやドキュメントからBootstrapする方法、既存のOrg Standardを使う方法に対応する。`project-scaffold-audit`とセットで入れる。 |
 | `project-scaffold-audit` | プロジェクトとOrg Standardの差分を確認し、`Local` / `Promote` / `Remove-Migrate` / `Needs-decision`に分類する。内容を確認・調整したうえで、承認された変更をOrg Standardに反映する。`project-scaffold`とセットで入れる。 |
 | `project-scaffold-maintain` | このリポジトリのメンテナー向け。`project-scaffold-audit`で`Global Promote`とされた改善候補を確認し、Built-in Starterに取り込むためのPRを作成する。 |

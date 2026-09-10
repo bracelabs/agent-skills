@@ -1,0 +1,4 @@
+interface:
+  display_name: "Task-owned dev team"
+  short_description: "Session model owns the task, delegates to same-CLI subagents"
+  default_prompt: "Use $dev-team with the model selected for this session as Task Owner, delegating bounded work to same-CLI subagents and using an agmsg cross-CLI peer only to borrow a model the other CLI has."

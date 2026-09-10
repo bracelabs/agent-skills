@@ -1,6 +1,6 @@
-# agmsg ticket templates
+# Delegation ticket templates
 
-Keep messages compact, factual, and addressed to one recipient. Use a commit hash, diff path, or exact files in place of repeated repository background.
+For a subagent ticket or an agmsg message alike. Keep it compact, factual, and addressed to one recipient. Use a commit hash, diff path, or exact files in place of repeated repository background.
 
 ## Delegation
 
